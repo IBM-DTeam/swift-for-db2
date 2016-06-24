@@ -8,7 +8,7 @@ matrix:
       sudo: required
 
 script:
-  - echo ">> Building and testing Swift IBM DB2 Driver."
+  - echo ">> Building and testing Swift SDK for DB2."
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./Build/linux.sh; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./Build/osx.sh; fi
-  - echo ">> Swift IBM DB2 Driver built and tested. Check above for status."
+  - echo ">> Swift SDK for DB2 built and tested. Check above for status."

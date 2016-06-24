@@ -29,7 +29,7 @@ docker pull ubuntu:wily
 update="apt-get update"
 install_primary="apt-get install -y clang unixodbc-dev unzip wget tar git sudo"
 
-# Install the IBM DB2 CLI
+# Install the Swift SDK for DB2 CLI
 install_cli="wget https://github.com/IBM-DTeam/swift-for-db2-cli/archive/master.zip && unzip master.zip && cd swift-for-db2-cli-master && sudo ./cli.sh && . env.sh && cd .. && rm -f master.zip && rm -rf swift-for-db2-cli-master"
 
 # Get the needed Swift snapshot
