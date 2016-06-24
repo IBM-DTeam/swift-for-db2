@@ -26,7 +26,7 @@ set -e
 brew install wget unixodbc
 
 # Install the IBM DB2 CLI
-wget https://github.com/IBM-DTeam/swift-ibm-db-cli/archive/master.zip && unzip master.zip && cd swift-ibm-db-cli-master && sudo ./cli.sh && . env.sh && cd .. && rm -f master.zip && rm -rf swift-ibm-db-cli-master
+wget https://github.com/IBM-DTeam/swift-for-db2-cli/archive/master.zip && unzip master.zip && cd swift-for-db2-cli-master && sudo ./cli.sh && . env.sh && cd .. && rm -f master.zip && rm -rf swift-for-db2-cli-master
 
 # Get the needed Swift snapshot
 export SWIFT_VERSION=swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a
@@ -38,4 +38,4 @@ export TOOLCHAINS=swift
 export DB2_CONN_STRING="DRIVER={DB2};DATABASE=BLUDB;UID=dash6435;PWD=0NKUFZxcskVZ;HOSTNAME=dashdb-entry-yp-dal09-09.services.dal.bluemix.net;PORT=50000"
 
 # Build the project and test it
-git clone -b ${TRAVIS_BRANCH} https://github.com/IBM-DTeam/swift-ibm-db.git && cd swift-ibm-db && git checkout ${TRAVIS_COMMIT} && swift build -Xcc -I/usr/local/include -Xlinker -L/usr/local/lib && swift test
+git clone -b ${TRAVIS_BRANCH} https://github.com/IBM-DTeam/swift-for-db2.git && cd swift-for-db2 && git checkout ${TRAVIS_COMMIT} && swift build -Xcc -I/usr/local/include -Xlinker -L/usr/local/lib && swift test

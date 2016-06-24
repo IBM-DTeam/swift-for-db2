@@ -1,4 +1,4 @@
-# Contributing to Swift IBM DB2 Driver
+# Contributing to Swift SDK for DB2
 
 We welcome contributions, and request you follow these guidelines.
 

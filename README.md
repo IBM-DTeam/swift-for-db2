@@ -1,15 +1,15 @@
-![swift-ibm-db](https://ibm.app.box.com/representation/file_version_73046098109/image_2048/1.png?shared_name=8caxu7n4o0sacctzjz9j86fn8zst3l65)
+![swift-for-db2](https://ibm.app.box.com/representation/file_version_73046098109/image_2048/1.png?shared_name=8caxu7n4o0sacctzjz9j86fn8zst3l65)
 
-**A Swift Driver for IBM DB2**
+**Swift SDK for DB2**
 
-[![Build Status - Master](https://travis-ci.org/IBM-DTeam/swift-ibm-db.svg?branch=master)](https://travis-ci.org/IBM-DTeam/swift-ibm-db)
+[![Build Status - Master](https://travis-ci.org/IBM-DTeam/swift-for-db2.svg?branch=master)](https://travis-ci.org/IBM-DTeam/swift-for-db2)
 ![Mac OS X](https://img.shields.io/badge/os-Mac%20OS%20X-green.svg?style=flat)
 ![Linux](https://img.shields.io/badge/os-linux-green.svg?style=flat)
 ![Apache 2](https://img.shields.io/badge/license-Apache2-blue.svg?style=flat)
 
 ## Summary
 
-The Swift IBM DB2 driver allows you to connect to your IBM DB2 database and execute queries in Swift.
+The Swift SDK for DB2 allows you to connect to your IBM DB2 database or products based off IBM DB2 and execute queries in Swift.
 
 ## Table of Contents
 * [Summary](#summary)
@@ -17,19 +17,19 @@ The Swift IBM DB2 driver allows you to connect to your IBM DB2 database and exec
 * [Swift Version](#swift-version)
 * [Installation (OS X)](#installation-os-x)
 * [Installation (Linux)](#installation-linux)
-* [Using Swift IBM DB2](#using-swift-ibm-db2)
+* [Using Swift SDK for DB2](#using-swift-sdk-for-db2)
 * [Examples](#examples)
 * [Contributing](#contributing)
 * [License](#license)
 
 ## Features:
 
-- Connect asynchronously or synchronously to your IBM DB2 database.
-- Disconnect asynchronously or synchronously to your IBM DB2 database.
-- Query your IBM DB2 database asynchronously or synchronously.
+- Connect asynchronously or synchronously to your database.
+- Disconnect asynchronously or synchronously to your database.
+- Query your database asynchronously or synchronously.
 
 ## Swift Version
-The latest version of the Swift IBM DB2 driver works with the DEVELOPMENT-SNAPSHOT-2016-05-09-a version of the Swift binaries. You can download this version of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
+The latest version of the Swift SDK for DB2 works with the DEVELOPMENT-SNAPSHOT-2016-05-09-a version of the Swift binaries. You can download this version of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
 
 ## Installation (OS X)
 
@@ -41,9 +41,9 @@ The latest version of the Swift IBM DB2 driver works with the DEVELOPMENT-SNAPSH
 
   `brew install wget unixodbc`
 
-3. Run the following to install the IBM DB2 ODBC CLI
+3. Run the following to install the Swift SDK for DB2 CLI
 
-  `wget https://github.com/IBM-DTeam/swift-ibm-db-cli/archive/master.zip && unzip master.zip && cd swift-ibm-db-cli-master && sudo ./cli.sh && . env.sh && cd .. && rm -f master.zip && rm -rf swift-ibm-db-cli-master`
+  `wget https://github.com/IBM-DTeam/swift-for-db2-cli/archive/master.zip && unzip master.zip && cd swift-for-db2-cli-master && sudo ./cli.sh && . env.sh && cd .. && rm -f master.zip && rm -rf swift-for-db2-cli-master`
 
 4. Download and install the [supported Swift compiler](#swift-version).
 
@@ -51,7 +51,7 @@ The latest version of the Swift IBM DB2 driver works with the DEVELOPMENT-SNAPSH
 
  After installation, make sure you update your PATH environment variable as described in the installation instructions (e.g. export PATH=/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/bin:$PATH)
 
-5. Now you are ready to use the Swift IBM DB2 driver. See [Using Swift IBM DB2](#using-swift-ibm-db2).
+5. Now you are ready to use the Swift SDK for DB2. See [Using Swift SDK for DB2](#using-swift-sdk-for-db2).
 
 
 ## Installation (Linux)
@@ -64,9 +64,9 @@ The latest version of the Swift IBM DB2 driver works with the DEVELOPMENT-SNAPSH
 
   `sudo apt-get install -y clang unixodbc-dev unzip wget tar`
 
-3. Run the following to install the IBM DB2 ODBC CLI
+3. Run the following to install the Swift SDK for DB2 CLI
 
-  `wget https://github.com/IBM-DTeam/swift-ibm-db-cli/archive/master.zip && unzip master.zip && cd swift-ibm-db-cli-master && sudo ./cli.sh && . env.sh && cd .. && rm -f master.zip && rm -rf swift-ibm-db-cli-master`
+  `wget https://github.com/IBM-DTeam/swift-for-db2-cli/archive/master.zip && unzip master.zip && cd swift-for-db2-cli-master && sudo ./cli.sh && . env.sh && cd .. && rm -f master.zip && rm -rf swift-for-db2-cli-master`
 
 4. Install the [supported Swift compiler](#swift-version) for Linux.
 
@@ -76,10 +76,10 @@ The latest version of the Swift IBM DB2 driver works with the DEVELOPMENT-SNAPSH
 The complete instructions for building and installing this library are  [here](https://github.com/apple/swift-corelibs-libdispatch/blob/experimental/foundation/INSTALL), though, all you need to do is just this
  `git clone -b experimental/foundation https://github.com/apple/swift-corelibs-libdispatch.git && cd swift-corelibs-libdispatch && git submodule init && git submodule update && sh ./autogen.sh && ./configure --with-swift-toolchain=<path-to-swift>/usr --prefix=<path-to-swift>/usr && make && make install`
 
-6. Now you are ready to use the Swift IBM DB2 driver. See [Using Swift IBM DB2](#using-swift-ibm-db2).
+6. Now you are ready to use the Swift SDK for DB2. See [Using Swift SDK for DB2](#using-swift-sdk-for-db2).
 
 
-## Using Swift IBM DB2
+## Using Swift SDK for DB2
 1. Create the ``` Package.swift ``` file in your project folder, and add the following code
 
  ```swift
@@ -88,14 +88,14 @@ import PackageDescription
 let package = Package(
     name: "your_project_name",
     dependencies: [
-        .Package(url: "https://github.com/IBM-DTeam/swift-ibm-db.git", majorVersion: 1)
+        .Package(url: "https://github.com/IBM-DTeam/swift-for-db2.git", majorVersion: 1)
     ]
 )
  ```
  If you already had the ```Package.swift``` file, add the following line under ```dependencies```
 
  ```swift
- .Package(url: "https://github.com/IBM-DTeam/swift-ibm-db.git", majorVersion: 1)
+ .Package(url: "https://github.com/IBM-DTeam/swift-for-db2.git", majorVersion: 1)
  ```
 
  2.Then, run the following command in terminal (in your project folder)
@@ -116,16 +116,16 @@ let package = Package(
  ```
 
 ## Examples
-Visit the [Wiki](https://github.com/IBM-DTeam/swift-ibm-db/wiki) for examples on how to use the Swift IBM DB2 driver.
+Visit the [Wiki](https://github.com/IBM-DTeam/swift-for-db2/wiki) for examples on how to use the Swift SDK for DB2.
 
 ## Contributing
-1. Clone this repository, `git clone https://github.com/IBM-DTeam/swift-ibm-db`
+1. Clone this repository, `git clone https://github.com/IBM-DTeam/swift-for-db2`
 2. Build and run tests
 
   ### Notes
-  * You are required to set the environment variable DB2_CONN_STRING to your IBM DB2 connection string.
+  * You are required to set the environment variable DB2_CONN_STRING to your database connection string.
 
-You can find info on contributing to Swift IBM DB2 Driver in our [contributing guidelines](CONTRIBUTING.md).
+You can find info on contributing to Swift SDK for DB2 in our [contributing guidelines](CONTRIBUTING.md).
 
 ## License
 This library is licensed under Apache 2.0. Full license text is available in [LICENSE](LICENSE.txt).
