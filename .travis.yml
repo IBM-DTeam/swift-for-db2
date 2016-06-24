@@ -1,0 +1,14 @@
+matrix:
+  include:
+    - os: linux
+      services: docker
+      sudo: required
+    - os: osx
+      osx_image: xcode7.3
+      sudo: required
+
+script:
+  - echo ">> Building and testing Swift IBM DB2 Driver."
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./Build/linux.sh; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./Build/osx.sh; fi
+  - echo ">> Swift IBM DB2 Driver built and tested. Check above for status."
