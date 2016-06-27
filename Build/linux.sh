@@ -30,7 +30,7 @@ update="apt-get update"
 install_primary="apt-get install -y clang unixodbc-dev unzip wget tar git sudo"
 
 # Install the IBM DB2 CLI
-install_cli="wget https://github.com/IBM-DTeam/swift-ibm-db-cli/archive/master.zip && unzip master.zip && cd swift-ibm-db-cli-master && sudo ./cli.sh && . env.sh && cd .. && rm -f master.zip && rm -rf swift-ibm-db-cli-master"
+install_cli="wget https://github.com/IBM-DTeam/swift-for-db2-cli/archive/master.zip && unzip master.zip && cd swift-for-db2-cli-master && sudo ./cli.sh && . env.sh && cd .. && rm -f master.zip && rm -rf swift-for-db2-cli-master"
 
 # Get the needed Swift snapshot
 get_swift="wget https://swift.org/builds/development/ubuntu1510/swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a/swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a-ubuntu15.10.tar.gz"
