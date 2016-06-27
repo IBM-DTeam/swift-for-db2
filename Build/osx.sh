@@ -38,4 +38,4 @@ export TOOLCHAINS=swift
 export DB2_CONN_STRING="DRIVER={DB2};DATABASE=BLUDB;UID=dash6435;PWD=0NKUFZxcskVZ;HOSTNAME=dashdb-entry-yp-dal09-09.services.dal.bluemix.net;PORT=50000"
 
 # Build the project and test it
-git clone -b ${TRAVIS_BRANCH} https://github.com/IBM-DTeam/swift-for-db2.git && cd swift-for-db2 && git checkout ${TRAVIS_COMMIT} && swift build -Xcc -I/usr/local/include -Xlinker -L/usr/local/lib && swift test
+cd ${TRAVIS_BUILD_DIR} && swift build -Xcc -I/usr/local/include -Xlinker -L/usr/local/lib && swift test
