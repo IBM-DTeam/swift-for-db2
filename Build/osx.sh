@@ -17,7 +17,7 @@
 ##
 
 # This script builds the corresponding Swift IBM DB Package in a
-# Docker ubuntu container (Travis CI) and tests it.
+# Docker OS X container (Travis CI) and tests it.
 
 # If any commands fail, we want the shell script to exit immediately.
 set -e
