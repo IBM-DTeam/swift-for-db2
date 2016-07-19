@@ -47,6 +47,6 @@ install_secondary="apt-get install -y autoconf libtool pkg-config systemtap-sdt-
 ldispatch="git clone -b experimental/foundation https://github.com/apple/swift-corelibs-libdispatch.git && cd swift-corelibs-libdispatch && git submodule init && git submodule update && sh ./autogen.sh && ./configure && make && sudo make install"
 
 # Build the project and test it
-build_and_test="cd /swift-for-db2 && swift build -Xcc -fblocks -Xlinker -ldispatch && swift test"
+build_and_test="cd /swift-for-db2 && swift build -Xcc -fblocks && swift test"
 
 docker run -v ${TRAVIS_BUILD_DIR}:/swift-for-db2 -i -t ubuntu:wily /bin/bash -c "${update} && ${install_primary} && ${install_cli} && ${get_swift} && ${open_swift} && ${mkdir_swift} && ${cp_swift} && ${export_path} && ${export_db} && ${install_secondary} && ${ldispatch} && ${build_and_test}"
