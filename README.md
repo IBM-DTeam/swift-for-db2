@@ -107,7 +107,7 @@ let package = Package(
 
  ### Linux
  ```
- swift build -Xcc -fblocks -Xlinker -ldispatch
+ swift build -Xcc -fblocks
  ```
 
  3.Wait until the build finishes, then run the project
