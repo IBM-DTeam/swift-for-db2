@@ -15,17 +15,16 @@
  **/
 
 import Foundation
+import Dispatch
 
 // modulemaps are slightly different for each OS, need to import the correct
 // ones
 #if os(Linux)
 import Glibc
 import IBMCliLinux
-import DispatchLinux
 #else
 import Darwin
 import IBMCliDarwin
-import Dispatch
 #endif
 
 /**
