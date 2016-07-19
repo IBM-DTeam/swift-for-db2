@@ -15,16 +15,17 @@
  **/
 
 import Foundation
-import Dispatch
 
 // modulemaps are slightly different for each OS, need to import the correct
 // ones
 #if os(Linux)
 import Glibc
 import IBMCliLinux
+import DispatchLinux
 #else
 import Darwin
 import IBMCliDarwin
+import Dispatch
 #endif
 
 /**
@@ -48,7 +49,7 @@ public class IBMDB {
 
     var conn: UnsafeMutablePointer<ODBC>!
 
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+    dispatch_async(dispatch_get_global_queue(Int(DISPATCH_QUEUE_PRIORITY_HIGH), 0), {
 
       // Try to connect to the database.
       conn = info.withCString { cString in
@@ -167,7 +168,7 @@ public class Connection {
    * Executes the callback upon completion.
    */
   public func query(query:String, callback: (result: [[NSDictionary]], error: [DBError]?) -> Void) -> Void {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+    dispatch_async(dispatch_get_global_queue(Int(DISPATCH_QUEUE_PRIORITY_HIGH), 0), {
       var data = [[NSDictionary]]()
 
       var response = self.data_fetch(query: query, data: &data)
@@ -316,7 +317,7 @@ public class Connection {
    * Disconnect asynchronously from the database associated with this Connection object.
    */
   public func disconnect(callback: () -> Void) -> Void {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+    dispatch_async(dispatch_get_global_queue(Int(DISPATCH_QUEUE_PRIORITY_HIGH), 0), {
       if self.conn != nil {
         db_disconnect(self.conn)
         self.conn = nil
