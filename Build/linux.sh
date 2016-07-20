@@ -33,10 +33,10 @@ install_primary="apt-get install -y clang unixodbc-dev unzip wget tar git sudo"
 install_cli="wget https://github.com/IBM-DTeam/swift-for-db2-cli/archive/master.zip && unzip master.zip && cd swift-for-db2-cli-master && sudo ./cli.sh && . env.sh && cd .. && rm -f master.zip && rm -rf swift-for-db2-cli-master"
 
 # Get the needed Swift snapshot
-get_swift="wget https://swift.org/builds/development/ubuntu1510/swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a/swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a-ubuntu15.10.tar.gz"
-open_swift="tar -xvzf swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a-ubuntu15.10.tar.gz"
+get_swift="wget https://swift.org/builds/development/ubuntu1510/swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a/swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a-ubuntu15.10.tar.gz"
+open_swift="tar -xvzf swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a-ubuntu15.10.tar.gz"
 mkdir_swift="mkdir -p /home/root/swift"
-cp_swift="cp -r swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a-ubuntu15.10/* /home/root/swift/"
+cp_swift="cp -r swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a-ubuntu15.10/* /home/root/swift/"
 export_path="export PATH=/home/root/swift/usr/bin:$PATH"
 
 # DB2 database used for testing
@@ -45,8 +45,7 @@ export_db="export DB2_CONN_STRING=\"DRIVER={DB2};DATABASE=BLUDB;UID=dash6435;PWD
 # Dependencies for the dispatch library
 install_secondary="apt-get install -y autoconf libtool pkg-config systemtap-sdt-dev libblocksruntime-dev libkqueue-dev libbsd-dev"
 ldispatch="git clone -b experimental/foundation https://github.com/apple/swift-corelibs-libdispatch.git && cd swift-corelibs-libdispatch && git submodule init && git submodule update && sh ./autogen.sh && ./configure --with-swift-toolchain=/home/root/swift/usr --prefix=/home/root/swift/usr && make && make install"
-
 # Build the project and test it
-build_and_test="cd /swift-for-db2 && swift build -Xcc -fblocks -Xlinker -ldispatch && swift test"
+build_and_test="cd /swift-for-db2 && swift build -Xcc -fblocks -Xcc -I/usr/local/include -Xlinker -L/usr/local/lib && swift test"
 
 docker run -v ${TRAVIS_BUILD_DIR}:/swift-for-db2 -i -t ubuntu:wily /bin/bash -c "${update} && ${install_primary} && ${install_cli} && ${get_swift} && ${open_swift} && ${mkdir_swift} && ${cp_swift} && ${export_path} && ${export_db} && ${install_secondary} && ${ldispatch} && ${build_and_test}"

@@ -48,8 +48,7 @@ public class IBMDB {
 
     var conn: UnsafeMutablePointer<ODBC>!
 
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
-
+    func run() -> Void {
       // Try to connect to the database.
       conn = info.withCString { cString in
         db_connect(conn, UnsafeMutablePointer(cString))
@@ -78,9 +77,18 @@ public class IBMDB {
         db_disconnect(conn)
         callback(error: error_arr, connection: nil)
       }
+    }
 
-
+    #if os(Linux)
+    dispatch_async(dispatch_get_global_queue(Int(DISPATCH_QUEUE_PRIORITY_HIGH), 0), {
+      run()
     })
+    #else
+    DispatchQueue.main.async {
+      run()
+    }
+    #endif
+
 
   }
 
@@ -167,7 +175,8 @@ public class Connection {
    * Executes the callback upon completion.
    */
   public func query(query:String, callback: (result: [[NSDictionary]], error: [DBError]?) -> Void) -> Void {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+
+    func run() -> Void {
       var data = [[NSDictionary]]()
 
       var response = self.data_fetch(query: query, data: &data)
@@ -182,7 +191,17 @@ public class Connection {
           callback(result: data, error: nil)
         }
       }
+    }
+
+    #if os(Linux)
+    dispatch_async(dispatch_get_global_queue(Int(DISPATCH_QUEUE_PRIORITY_HIGH), 0), {
+      run()
     })
+    #else
+    DispatchQueue.main.async {
+      run()
+    }
+    #endif
   }
 
 
@@ -316,13 +335,23 @@ public class Connection {
    * Disconnect asynchronously from the database associated with this Connection object.
    */
   public func disconnect(callback: () -> Void) -> Void {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+    func run() -> Void {
       if self.conn != nil {
         db_disconnect(self.conn)
         self.conn = nil
       }
       callback()
+    }
+
+    #if os(Linux)
+    dispatch_async(dispatch_get_global_queue(Int(DISPATCH_QUEUE_PRIORITY_HIGH), 0), {
+      run()
     })
+    #else
+    DispatchQueue.main.async {
+      run()
+    }
+    #endif
   }
 
 

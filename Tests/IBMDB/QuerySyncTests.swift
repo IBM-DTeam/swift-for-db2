@@ -31,7 +31,11 @@ extension String {
     var randomString: String = ""
 
     for _ in 0..<length {
+      #if os(Linux)
       let randomValue = random() % base.characters.count
+      #else
+      let randomValue = Int(arc4random_uniform(UInt32(base.characters.count)))
+      #endif
 
       var current = 0
       for character in base.characters {
@@ -75,7 +79,7 @@ class QuerySyncTests : XCTestCase {
   #if os(Linux)
   private static var tableName = "DB2_TEST_TABLE_LINUX_" + String.getRandom(length: 1 + Int(random() % (100)))
   #else
-  private static var tableName = "DB2_TEST_TABLE_DARWIN_" + String.getRandom(length: 1 + Int(random() % (100)))
+  private static var tableName = "DB2_TEST_TABLE_DARWIN_" + String.getRandom(length: 1 + Int(arc4random_uniform(100)))
   #endif
 
   override func setUp() {
@@ -139,7 +143,11 @@ class QuerySyncTests : XCTestCase {
 
     let conn = info.connection
 
+    #if os(Linux)
     let id = 1 + Int(random() % (1101))
+    #else
+    let id = 1 + Int(arc4random_uniform(1101))
+    #endif
     let query = "SELECT * FROM \(QuerySyncTests.tableName) WHERE ID=\(id)"
 
     let response = conn!.querySync(query: query)
@@ -173,7 +181,13 @@ class QuerySyncTests : XCTestCase {
     let conn = info.connection
 
     for _ in 1...100 {
+
+      #if os(Linux)
       let id = 1 + Int(random() % (1101))
+      #else
+      let id = 1 + Int(arc4random_uniform(1101))
+      #endif
+
       let query = "SELECT * FROM \(QuerySyncTests.tableName) WHERE ID=\(id)"
 
       let response = conn!.querySync(query: query)
@@ -209,7 +223,13 @@ class QuerySyncTests : XCTestCase {
     let conn = info.connection
 
     for _ in 1...1000 {
+
+      #if os(Linux)
       let id = 1 + Int(random() % (1101))
+      #else
+      let id = 1 + Int(arc4random_uniform(1101))
+      #endif
+
       let query = "SELECT * FROM \(QuerySyncTests.tableName) WHERE ID=\(id)"
 
       let response = conn!.querySync(query: query)
@@ -339,7 +359,12 @@ class QuerySyncTests : XCTestCase {
 
     let conn = info.connection
 
+    #if os(Linux)
     let randomString = String.getRandom(length: 1 + Int(random() % (256)))
+    #else
+    let randomString = String.getRandom(length: 1 + Int(arc4random_uniform(256)))
+    #endif
+
     let query = "UPDATE \(QuerySyncTests.tableName) SET TEXT='\(randomString)' WHERE ID=1"
 
     let response = conn!.querySync(query: query)
@@ -371,7 +396,13 @@ class QuerySyncTests : XCTestCase {
     let conn = info.connection
 
     for id in 2...101 {
+
+      #if os(Linux)
       let randomString = String.getRandom(length: 1 + Int(random() % (256)))
+      #else
+      let randomString = String.getRandom(length: 1 + Int(arc4random_uniform(256)))
+      #endif
+
       let query = "UPDATE \(QuerySyncTests.tableName) SET TEXT='\(randomString)' WHERE ID=\(id)"
 
       let response = conn!.querySync(query: query)
@@ -405,7 +436,13 @@ class QuerySyncTests : XCTestCase {
     let conn = info.connection
 
     for id in 102...1101 {
+
+      #if os(Linux)
       let randomString = String.getRandom(length: 1 + Int(random() % (256)))
+      #else
+      let randomString = String.getRandom(length: 1 + Int(arc4random_uniform(256)))
+      #endif
+
       let query = "UPDATE \(QuerySyncTests.tableName) SET TEXT='\(randomString)' WHERE ID=\(id)"
 
       let response = conn!.querySync(query: query)
@@ -437,7 +474,12 @@ class QuerySyncTests : XCTestCase {
 
     let conn = info.connection
 
+    #if os(Linux)
     let randomString = String.getRandom(length: 1 + Int(random() % (256)))
+    #else
+    let randomString = String.getRandom(length: 1 + Int(arc4random_uniform(256)))
+    #endif
+
     let query = "INSERT INTO \(QuerySyncTests.tableName) (ID, TEXT) VALUES (1, '\(randomString)')"
 
     let response = conn!.querySync(query: query)
@@ -470,7 +512,13 @@ class QuerySyncTests : XCTestCase {
     let conn = info.connection
 
     for id in 2...101 {
+
+      #if os(Linux)
       let randomString = String.getRandom(length: 1 + Int(random() % (256)))
+      #else
+      let randomString = String.getRandom(length: 1 + Int(arc4random_uniform(256)))
+      #endif
+
       let query = "INSERT INTO \(QuerySyncTests.tableName) (ID, TEXT) VALUES (\(id), '\(randomString)')"
 
       let response = conn!.querySync(query: query)
@@ -504,7 +552,13 @@ class QuerySyncTests : XCTestCase {
     let conn = info.connection
 
     for id in 102...1101 {
+
+      #if os(Linux)
       let randomString = String.getRandom(length: 1 + Int(random() % (256)))
+      #else
+      let randomString = String.getRandom(length: 1 + Int(arc4random_uniform(256)))
+      #endif
+
       let query = "INSERT INTO " + QuerySyncTests.tableName + " (ID, TEXT) VALUES (\(id), '\(randomString)')"
 
       let response = conn!.querySync(query: query)
