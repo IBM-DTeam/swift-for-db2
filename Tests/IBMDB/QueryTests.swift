@@ -48,7 +48,7 @@ class QueryTests : XCTestCase {
   #if os(Linux)
   private static var tableName = "DB2_TEST_TABLE_LINUX_" + String.getRandom(length: 1 + Int(random() % (100)))
   #else
-  private static var tableName = "DB2_TEST_TABLE_DARWIN_" + String.getRandom(length: 1 + Int(random() % (100)))
+  private static var tableName = "DB2_TEST_TABLE_DARWIN_" + String.getRandom(length: 1 + Int(arc4random_uniform(100)))
   #endif
 
   override func setUp() {
@@ -111,7 +111,12 @@ class QueryTests : XCTestCase {
         XCTFail("Cannot connect to DB2.")
       }
 
+      #if os(Linux)
       let id = 1 + Int(random() % (1101))
+      #else
+      let id = 1 + Int(arc4random_uniform(1101))
+      #endif
+
       let query = "SELECT * FROM \(QueryTests.tableName) WHERE ID=\(id)"
 
       connection!.query(query: query) { (result, error) -> Void in
@@ -158,7 +163,13 @@ class QueryTests : XCTestCase {
 
       var numFinished = 0
       for _ in 1...100 {
+
+        #if os(Linux)
         let id = 1 + Int(random() % (1101))
+        #else
+        let id = 1 + Int(arc4random_uniform(1101))
+        #endif
+
         let query = "SELECT * FROM \(QueryTests.tableName) WHERE ID=\(id)"
 
         connection!.query(query: query) { (result, error) -> Void in
@@ -211,7 +222,13 @@ class QueryTests : XCTestCase {
 
       var numFinished = 0
       for _ in 1...1000 {
+
+        #if os(Linux)
         let id = 1 + Int(random() % (1101))
+        #else
+        let id = 1 + Int(arc4random_uniform(1101))
+        #endif
+
         let query = "SELECT * FROM \(QueryTests.tableName) WHERE ID=\(id)"
 
         connection!.query(query: query) { (result, error) -> Void in
@@ -408,7 +425,12 @@ class QueryTests : XCTestCase {
         XCTFail("Cannot connect to DB2.")
       }
 
+      #if os(Linux)
       let randomString = String.getRandom(length: 1 + Int(random() % (256)))
+      #else
+      let randomString = String.getRandom(length: 1 + Int(arc4random_uniform(256)))
+      #endif
+
       let query = "UPDATE \(QueryTests.tableName) SET TEXT='\(randomString)' WHERE ID=1"
 
       connection!.query(query: query) { (result, error) -> Void in
@@ -453,7 +475,13 @@ class QueryTests : XCTestCase {
 
       var numFinished = 0
       for _ in 1...100 {
+
+        #if os(Linux)
         let randomString = String.getRandom(length: 1 + Int(random() % (256)))
+        #else
+        let randomString = String.getRandom(length: 1 + Int(arc4random_uniform(256)))
+        #endif
+
         let query = "UPDATE \(QueryTests.tableName) SET TEXT='\(randomString)' WHERE ID=1"
 
         connection!.query(query: query) { (result, error) -> Void in
@@ -505,7 +533,13 @@ class QueryTests : XCTestCase {
 
       var numFinished = 0
       for _ in 1...1000 {
+
+        #if os(Linux)
         let randomString = String.getRandom(length: 1 + Int(random() % (256)))
+        #else
+        let randomString = String.getRandom(length: 1 + Int(arc4random_uniform(256)))
+        #endif
+
         let query = "UPDATE \(QueryTests.tableName) SET TEXT='\(randomString)' WHERE ID=1"
 
         connection!.query(query: query) { (result, error) -> Void in
@@ -555,7 +589,12 @@ class QueryTests : XCTestCase {
         XCTFail("Cannot connect to DB2.")
       }
 
+      #if os(Linux)
       let randomString = String.getRandom(length: 1 + Int(random() % (256)))
+      #else
+      let randomString = String.getRandom(length: 1 + Int(arc4random_uniform(256)))
+      #endif
+
       let query = "INSERT INTO " + QueryTests.tableName + " (ID, TEXT) VALUES (1, '\(randomString)')"
 
       connection!.query(query: query) { (result, error) -> Void in
@@ -601,7 +640,13 @@ class QueryTests : XCTestCase {
 
       var numFinished = 0
       for id in 2...101 {
+
+        #if os(Linux)
         let randomString = String.getRandom(length: 1 + Int(random() % (256)))
+        #else
+        let randomString = String.getRandom(length: 1 + Int(arc4random_uniform(256)))
+        #endif
+
         let query = "INSERT INTO " + QueryTests.tableName + " (ID, TEXT) VALUES (\(id), '\(randomString)')"
 
         connection!.query(query: query) { (result, error) -> Void in
@@ -653,7 +698,13 @@ class QueryTests : XCTestCase {
 
       var numFinished = 0
       for id in 102...1101 {
+
+        #if os(Linux)
         let randomString = String.getRandom(length: 1 + Int(random() % (256)))
+        #else
+        let randomString = String.getRandom(length: 1 + Int(arc4random_uniform(256)))
+        #endif
+
         let query = "INSERT INTO " + QueryTests.tableName + " (ID, TEXT) VALUES (\(id), '\(randomString)')"
 
         connection!.query(query: query) { (result, error) -> Void in
