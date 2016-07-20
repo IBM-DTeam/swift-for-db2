@@ -107,7 +107,7 @@ let package = Package(
 
  ### Linux
  ```
- swift build -Xcc -fblocks -Xcc -I/usr/local/include -Xlinker -L/usr/local/lib && swift test
+ swift build -Xcc -fblocks -Xcc -I/usr/local/include -Xlinker -L/usr/local/lib
  ```
 
  3.Wait until the build finishes, then run the project
