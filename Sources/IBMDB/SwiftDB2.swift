@@ -27,12 +27,21 @@ import Darwin
 import IBMCliDarwin
 #endif
 
+// Custom named queues
+#if os(Linux)
+let queue = dispatch_queue_create("swift-for-db2", DISPATCH_QUEUE_CONCURRENT)
+#else
+let queue = DispatchQueue(label: "swift-for-db2", attributes: .concurrent)
+#endif
+
+
 /**
  * IBMDB Class
  *
  * Allows the user to connect to a database.
  */
 public class IBMDB {
+
 
   /**
    * Empty constructor to initialize IBMDB.
@@ -80,11 +89,11 @@ public class IBMDB {
     }
 
     #if os(Linux)
-    dispatch_async(dispatch_get_global_queue(Int(DISPATCH_QUEUE_PRIORITY_HIGH), 0), {
+    dispatch_async(queue) {
       run()
-    })
+    }
     #else
-    DispatchQueue.main.async {
+    queue.sync {
       run()
     }
     #endif
@@ -194,11 +203,11 @@ public class Connection {
     }
 
     #if os(Linux)
-    dispatch_async(dispatch_get_global_queue(Int(DISPATCH_QUEUE_PRIORITY_HIGH), 0), {
+    dispatch_async(queue) {
       run()
-    })
+    }
     #else
-    DispatchQueue.main.async {
+    queue.sync {
       run()
     }
     #endif
@@ -344,14 +353,15 @@ public class Connection {
     }
 
     #if os(Linux)
-    dispatch_async(dispatch_get_global_queue(Int(DISPATCH_QUEUE_PRIORITY_HIGH), 0), {
+    dispatch_async(queue) {
       run()
-    })
+    }
     #else
-    DispatchQueue.main.async {
+    queue.sync {
       run()
     }
     #endif
+
   }
 
 
