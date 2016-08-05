@@ -12,8 +12,6 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./Build/linux.sh; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./Build/osx.sh; fi
   - echo ">> Swift SDK for DB2 built and tested. Check above for status."
-  
-language: objective-c
 
 notifications:
   slack: ibm-analytics:LgaBAvT7hSn8vGXR4elXTfW1
