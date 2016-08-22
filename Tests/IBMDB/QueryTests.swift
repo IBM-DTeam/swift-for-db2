@@ -133,7 +133,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 300) { error in
+    self.waitForExpectations(withTimeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -193,7 +193,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 300) { error in
+    self.waitForExpectations(withTimeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -252,7 +252,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 300) { error in
+    self.waitForExpectations(withTimeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -295,7 +295,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 300) { error in
+    self.waitForExpectations(withTimeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -347,7 +347,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 300) { error in
+    self.waitForExpectations(withTimeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -398,7 +398,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 300) { error in
+    self.waitForExpectations(withTimeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -447,7 +447,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 300) { error in
+    self.waitForExpectations(withTimeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -505,7 +505,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 300) { error in
+    self.waitForExpectations(withTimeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -563,7 +563,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 300) { error in
+    self.waitForExpectations(withTimeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -611,7 +611,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 300) { error in
+    self.waitForExpectations(withTimeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -670,7 +670,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 300) { error in
+    self.waitForExpectations(withTimeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -728,7 +728,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 300) { error in
+    self.waitForExpectations(withTimeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
