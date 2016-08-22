@@ -293,9 +293,9 @@ public class Connection {
         switch Int(col_data_type_fetch(Int32(col), result)) {
         default:
             #if os(Linux)
-                let dict:DB2Dictionary = ["\(col_name)": String(value)].bridge()
+                let dict:DB2Dictionary = ["\(col_name)": String(value).bridge()]
             #else
-                let dict:DB2Dictionary = [col_name : String(value) as AnyObject]
+                let dict:DB2Dictionary = ["\(col_name)" : String(value) as AnyObject]
             #endif
 
             return dict
