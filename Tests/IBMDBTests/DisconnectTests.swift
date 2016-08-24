@@ -56,14 +56,14 @@ class DisconnectTests : XCTestCase {
       XCTFail("Cannot establish a connection to the database.")
     }
 
-    let expectation = self.expectation(withDescription: "Attempts to connect and disconnect from the database and runs the callback closure")
+    let expectation = self.expectation(description: "Attempts to connect and disconnect from the database and runs the callback closure")
 
     conn!.disconnect() { () -> Void in
       XCTAssertNotNil(conn!.info().error, "Cannot fetch database info.")
       expectation.fulfill()
     }
 
-    self.waitForExpectations(withTimeout: 600) { error in
+    self.waitForExpectations(timeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }

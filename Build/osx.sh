@@ -29,13 +29,13 @@ brew install wget unixodbc
 wget https://github.com/IBM-DTeam/swift-for-db2-cli/archive/master.zip && unzip master.zip && cd swift-for-db2-cli-master && sudo ./cli.sh && . env.sh && cd .. && rm -f master.zip && rm -rf swift-for-db2-cli-master
 
 # Get the needed Swift snapshot
-export SWIFT_VERSION=swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a
-wget https://swift.org/builds/development/xcode/swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a/swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a-osx.pkg
-sudo installer -pkg swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a-osx.pkg -target /
+export SWIFT_VERSION=swift-DEVELOPMENT-SNAPSHOT-2016-08-23-a
+wget https://swift.org/builds/development/xcode/swift-DEVELOPMENT-SNAPSHOT-2016-08-23-a/swift-DEVELOPMENT-SNAPSHOT-2016-08-23-a-osx.pkg
+sudo installer -pkg swift-DEVELOPMENT-SNAPSHOT-2016-08-23-a-osx.pkg -target /
 export TOOLCHAINS=swift
 
 # DB2 database used for testing
 export DB2_CONN_STRING="DRIVER={DB2};DATABASE=BLUDB;UID=dash6435;PWD=0NKUFZxcskVZ;HOSTNAME=dashdb-entry-yp-dal09-09.services.dal.bluemix.net;PORT=50000"
 
 # Build the project and test it
-cd ${TRAVIS_BUILD_DIR} && swift build -Xcc -I/usr/local/include -Xlinker -L/usr/local/lib && swift test
+cd ${TRAVIS_BUILD_DIR} && swift build && swift test -Xcc -I/usr/local/include -Xlinker -L/usr/local/lib

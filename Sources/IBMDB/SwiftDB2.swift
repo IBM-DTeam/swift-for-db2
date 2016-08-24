@@ -27,18 +27,12 @@ import Dispatch
     import IBMCliDarwin
 #endif
 
-// Custom named queues
-#if os(Linux)
-let queue = dispatch_queue_create("swift-for-db2", DISPATCH_QUEUE_CONCURRENT)
-#else
-let queue = DispatchQueue(label: "swift-for-db2", attributes: .concurrent)
-#endif
+// Custom named queue
+let queue = DispatchQueue(label: "swift-for-db2", attributes: Dispatch.DispatchQueue.Attributes.concurrent)
 
-#if os(OSX)
-    public typealias DB2Dictionary = [String : AnyObject]
-#else
-    public typealias DB2Dictionary = [String : Any]
-#endif
+
+public typealias DB2Dictionary = [String : String]
+
 
 /**
  * IBMDB Class
@@ -58,14 +52,14 @@ public class IBMDB {
     /**
      * Async method to connect to the database using the connection string 'info'
      */
-    public func connect(info: String, callback: (error: [DBError]?, connection: Connection?) -> Void) -> Void {
+    public func connect(info: String, callback: ([DBError]?, Connection?) -> Void) -> Void {
 
         var conn: UnsafeMutablePointer<ODBC>!
 
-        func run() -> Void {
+        queue.sync {
             // Try to connect to the database.
             conn = info.withCString { cString in
-                db_connect(conn, UnsafeMutablePointer(cString))
+                db_connect(conn, UnsafeMutablePointer(mutating: cString))
             }
 
             if !connection_error_found(conn) {
@@ -74,7 +68,7 @@ public class IBMDB {
                 // Create a Connection object with conn to use in the callback.
                 let db = Connection(conn: conn)
 
-                callback(error: nil, connection: db)
+                callback(nil, db)
             } else {
                 // Error! Disconnect and callback with an error.
                 var error_arr = [DBError]()
@@ -89,20 +83,9 @@ public class IBMDB {
                 } while (connection_error_found(conn))
 
                 db_disconnect(conn)
-                callback(error: error_arr, connection: nil)
+                callback(error_arr, nil)
             }
         }
-
-        #if os(Linux)
-            dispatch_async(queue) {
-                run()
-            }
-        #else
-            queue.sync {
-                run()
-            }
-        #endif
-
 
     }
 
@@ -115,7 +98,7 @@ public class IBMDB {
 
         // Try to connect to the database.
         conn = info.withCString { cString in
-            db_connect(conn, UnsafeMutablePointer(cString))
+            db_connect(conn, UnsafeMutablePointer(mutating: cString))
         }
 
         if !connection_error_found(conn) {
@@ -188,34 +171,25 @@ public class Connection {
      * Runs a query asynchronously against the database.
      * Executes the callback upon completion.
      */
-    public func query(query:String, callback: (result: [[DB2Dictionary]], error: [DBError]?) -> Void) -> Void {
+    public func query(query:String, callback: ([[DB2Dictionary]], [DBError]?) -> Void) -> Void {
 
-        func run() -> Void {
+        queue.sync {
             var data = [[DB2Dictionary]]()
 
             var response = self.data_fetch(query: query, data: &data)
 
             if response.success {
-                callback(result: data, error: nil)
+                callback(data, nil)
             } else {
                 data.removeAll()
                 if sql_error_found(response.result) {
-                    callback(result: data, error: self.error(Error: DBErrorType().Fetch, result: &response.result!))
+                    callback(data, self.error(Error: DBErrorType().Fetch, result: &response.result!))
                 } else {
-                    callback(result: data, error: nil)
+                    callback(data, nil)
                 }
             }
         }
 
-        #if os(Linux)
-            dispatch_async(queue) {
-                run()
-            }
-        #else
-            queue.sync {
-                run()
-            }
-        #endif
     }
 
 
@@ -248,7 +222,7 @@ public class Connection {
     private func data_fetch(query: String, data: inout [[DB2Dictionary]]) -> (success: Bool, result: UnsafeMutablePointer<TABLE_RESULT>?) {
 
         var result = query.withCString { cString in
-            table_fetch(self.conn, UnsafeMutablePointer(cString))
+            table_fetch(self.conn, UnsafeMutablePointer(mutating: cString))
         }
 
         if sql_error_found(result) {
@@ -292,11 +266,7 @@ public class Connection {
         }
         switch Int(col_data_type_fetch(Int32(col), result)) {
         default:
-            #if os(Linux)
-                let dict:DB2Dictionary = ["\(col_name)": String(value).bridge()]
-            #else
-                let dict:DB2Dictionary = ["\(col_name)" : String(value) as AnyObject]
-            #endif
+            let dict = ["\(col_name)": String(value)!]
 
             return dict
         }
@@ -349,24 +319,13 @@ public class Connection {
      * Disconnect asynchronously from the database associated with this Connection object.
      */
     public func disconnect(callback: () -> Void) -> Void {
-        func run() -> Void {
+        queue.sync {
             if self.conn != nil {
                 db_disconnect(self.conn)
                 self.conn = nil
             }
             callback()
         }
-
-        #if os(Linux)
-            dispatch_async(queue) {
-                run()
-            }
-        #else
-            queue.sync {
-                run()
-            }
-        #endif
-
     }
 
 

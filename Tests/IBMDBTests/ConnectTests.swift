@@ -50,7 +50,7 @@ class ConnectTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let expectation = self.expectation(withDescription: "Attempts to connect to the database and runs the callback closure")
+    let expectation = self.expectation(description: "Attempts to connect to the database and runs the callback closure")
 
     db.connect(info: connStringValid!) { (error, connection) -> Void in
       XCTAssertNil(error, "error is Nil")
@@ -58,7 +58,7 @@ class ConnectTests : XCTestCase {
       expectation.fulfill()
     }
 
-    self.waitForExpectations(withTimeout: 600) { error in
+    self.waitForExpectations(timeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -68,7 +68,7 @@ class ConnectTests : XCTestCase {
 
   func testConnectInvalidConfig() {
 
-    let expectation = self.expectation(withDescription: "Attempts to connect to the database and runs the callback closure")
+    let expectation = self.expectation(description: "Attempts to connect to the database and runs the callback closure")
 
     db.connect(info: connStringInvalid) { (error, connection) -> Void in
       XCTAssertNotNil(error, "error is not Nil")
@@ -76,7 +76,7 @@ class ConnectTests : XCTestCase {
       expectation.fulfill()
     }
 
-    self.waitForExpectations(withTimeout: 600) { error in
+    self.waitForExpectations(timeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }

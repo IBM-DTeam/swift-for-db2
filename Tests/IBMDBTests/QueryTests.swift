@@ -104,7 +104,7 @@ class QueryTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let expectation = self.expectation(withDescription: "Attempts to connect to the database and runs queries.")
+    let expectation = self.expectation(description: "Attempts to connect to the database and runs queries.")
 
     db.connect(info: connString!) { (error, connection) -> Void in
       if error != nil {
@@ -133,7 +133,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 600) { error in
+    self.waitForExpectations(timeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -154,7 +154,7 @@ class QueryTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let expectation = self.expectation(withDescription: "Attempts to connect to the database and runs queries.")
+    let expectation = self.expectation(description: "Attempts to connect to the database and runs queries.")
 
     db.connect(info: connString!) { (error, connection) -> Void in
       if error != nil {
@@ -193,7 +193,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 600) { error in
+    self.waitForExpectations(timeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -213,7 +213,7 @@ class QueryTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let expectation = self.expectation(withDescription: "Attempts to connect to the database and runs queries.")
+    let expectation = self.expectation(description: "Attempts to connect to the database and runs queries.")
 
     db.connect(info: connString!) { (error, connection) -> Void in
       if error != nil {
@@ -252,7 +252,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 600) { error in
+    self.waitForExpectations(timeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -272,7 +272,7 @@ class QueryTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let expectation = self.expectation(withDescription: "Attempts to connect to the database and runs queries.")
+    let expectation = self.expectation(description: "Attempts to connect to the database and runs queries.")
 
     db.connect(info: connString!) { (error, connection) -> Void in
       if error != nil {
@@ -295,7 +295,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 600) { error in
+    self.waitForExpectations(timeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -315,7 +315,7 @@ class QueryTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let expectation = self.expectation(withDescription: "Attempts to connect to the database and runs queries.")
+    let expectation = self.expectation(description: "Attempts to connect to the database and runs queries.")
 
     db.connect(info: connString!) { (error, connection) -> Void in
       if error != nil {
@@ -347,7 +347,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 600) { error in
+    self.waitForExpectations(timeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -366,7 +366,7 @@ class QueryTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let expectation = self.expectation(withDescription: "Attempts to connect to the database and runs queries.")
+    let expectation = self.expectation(description: "Attempts to connect to the database and runs queries.")
 
     db.connect(info: connString!) { (error, connection) -> Void in
       if error != nil {
@@ -398,7 +398,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 600) { error in
+    self.waitForExpectations(timeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -418,7 +418,7 @@ class QueryTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let expectation = self.expectation(withDescription: "Attempts to connect to the database and runs queries.")
+    let expectation = self.expectation(description: "Attempts to connect to the database and runs queries.")
 
     db.connect(info: connString!) { (error, connection) -> Void in
       if error != nil {
@@ -447,7 +447,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 600) { error in
+    self.waitForExpectations(timeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -466,7 +466,7 @@ class QueryTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let expectation = self.expectation(withDescription: "Attempts to connect to the database and runs queries.")
+    let expectation = self.expectation(description: "Attempts to connect to the database and runs queries.")
 
     db.connect(info: connString!) { (error, connection) -> Void in
       if error != nil {
@@ -505,7 +505,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 600) { error in
+    self.waitForExpectations(timeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -524,7 +524,7 @@ class QueryTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let expectation = self.expectation(withDescription: "Attempts to connect to the database and runs queries.")
+    let expectation = self.expectation(description: "Attempts to connect to the database and runs queries.")
 
     db.connect(info: connString!) { (error, connection) -> Void in
       if error != nil {
@@ -563,7 +563,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 600) { error in
+    self.waitForExpectations(timeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -582,7 +582,7 @@ class QueryTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let expectation = self.expectation(withDescription: "Attempts to connect to the database and runs queries.")
+    let expectation = self.expectation(description: "Attempts to connect to the database and runs queries.")
 
     db.connect(info: connString!) { (error, connection) -> Void in
       if error != nil {
@@ -611,7 +611,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 600) { error in
+    self.waitForExpectations(timeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -631,7 +631,7 @@ class QueryTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let expectation = self.expectation(withDescription: "Attempts to connect to the database and runs queries.")
+    let expectation = self.expectation(description: "Attempts to connect to the database and runs queries.")
 
     db.connect(info: connString!) { (error, connection) -> Void in
       if error != nil {
@@ -670,7 +670,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 600) { error in
+    self.waitForExpectations(timeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }
@@ -689,7 +689,7 @@ class QueryTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let expectation = self.expectation(withDescription: "Attempts to connect to the database and runs queries.")
+    let expectation = self.expectation(description: "Attempts to connect to the database and runs queries.")
 
     db.connect(info: connString!) { (error, connection) -> Void in
       if error != nil {
@@ -728,7 +728,7 @@ class QueryTests : XCTestCase {
 
     }
 
-    self.waitForExpectations(withTimeout: 600) { error in
+    self.waitForExpectations(timeout: 600) { error in
       if let error = error {
         XCTFail("waitForExpectationsWithTimeout errored: \(error)")
       }

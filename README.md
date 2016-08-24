@@ -29,7 +29,7 @@ The Swift SDK for DB2 allows you to connect to your IBM DB2 database or products
 - Query your database asynchronously or synchronously.
 
 ## Swift Version
-The latest version of the Swift SDK for DB2 works with the DEVELOPMENT-SNAPSHOT-2016-06-20-a version of the Swift binaries. You can download this version of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
+The latest version of the Swift SDK for DB2 works with the DEVELOPMENT-SNAPSHOT-2016-08-23-a version of the Swift binaries. You can download this version of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
 
 ## Installation (OS X)
 
@@ -72,11 +72,7 @@ The latest version of the Swift SDK for DB2 works with the DEVELOPMENT-SNAPSHOT-
 
  Follow the instructions provided on that page. After installing it (i.e. uncompressing the tar file), make sure you update your PATH environment variable so that it includes the extracted tools: `export PATH=/<path to uncompress tar contents>/usr/bin:$PATH`. To update the PATH env variable, you can update your [.bashrc file](http://www.joshstaiger.org/archives/2005/07/bash_profile_vs.html).
 
-5. Clone, build and install the libdispatch library.
-The complete instructions for building and installing this library are  [here](https://github.com/apple/swift-corelibs-libdispatch/blob/experimental/foundation/INSTALL), though, all you need to do is just this
- `git clone -b experimental/foundation https://github.com/apple/swift-corelibs-libdispatch.git && cd swift-corelibs-libdispatch && git submodule init && git submodule update && sh ./autogen.sh && ./configure --with-swift-toolchain=<path-to-swift>/usr --prefix=<path-to-swift>/usr && make && make install`
-
-6. Now you are ready to use the Swift SDK for DB2. See [Using Swift SDK for DB2](#using-swift-sdk-for-db2).
+5. Now you are ready to use the Swift SDK for DB2. See [Using Swift SDK for DB2](#using-swift-sdk-for-db2).
 
 
 ## Using Swift SDK for DB2
@@ -100,14 +96,8 @@ let package = Package(
 
  2.Then, run the following command in terminal (in your project folder)
 
- ### OS X
  ```
- swift build -Xcc -I/usr/local/include -Xlinker -L/usr/local/lib
- ```
-
- ### Linux
- ```
- swift build -Xcc -fblocks -Xcc -I/usr/local/include -Xlinker -L/usr/local/lib
+ swift build
  ```
 
  3.Wait until the build finishes, then run the project
@@ -120,7 +110,7 @@ Visit the [Wiki](https://github.com/IBM-DTeam/swift-for-db2/wiki) for examples o
 
 ## Contributing
 1. Clone this repository, `git clone https://github.com/IBM-DTeam/swift-for-db2`
-2. Build and run tests
+2. Build and run tests with `swift test -Xcc -I/usr/local/include -Xlinker -L/usr/local/lib`
 
   ### Notes
   * You are required to set the environment variable DB2_CONN_STRING to your database connection string.

@@ -16,7 +16,7 @@
 
 import XCTest
 
-@testable import IBMDBTestSuite
+@testable import IBMDBTests
 
 XCTMain([
     testCase(ConnectTests.allTests),
