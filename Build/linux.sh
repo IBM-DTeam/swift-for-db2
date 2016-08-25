@@ -27,7 +27,7 @@ docker pull ubuntu:wily
 
 # Install dependencies
 update="apt-get update"
-install_primary="apt-get install -y clang unixodbc-dev unzip wget tar git sudo uuid-dev autoconf libtool pkg-config systemtap-sdt-dev libblocksruntime-dev libkqueue-dev libbsd-dev"
+install_primary="apt-get install -y clang unixodbc-dev unzip wget tar git sudo uuid-dev autoconf libtool pkg-config systemtap-sdt-dev libblocksruntime-dev libkqueue-dev libbsd-dev curl"
 
 # Install the IBM DB2 CLI
 install_cli="wget https://github.com/IBM-DTeam/swift-for-db2-cli/archive/master.zip && unzip master.zip && cd swift-for-db2-cli-master && sudo ./cli.sh && . env.sh && cd .. && rm -f master.zip && rm -rf swift-for-db2-cli-master"
