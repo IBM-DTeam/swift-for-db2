@@ -27,7 +27,7 @@ docker pull ubuntu:wily
 
 # Install dependencies
 update="apt-get update"
-install_primary="apt-get install -y clang unixodbc-dev unzip wget tar git sudo uuid-dev autoconf libtool pkg-config systemtap-sdt-dev libblocksruntime-dev libkqueue-dev libbsd-dev curl ldconfig"
+install_primary="apt-get install -y clang unixodbc-dev unzip wget tar git sudo uuid-dev autoconf libtool pkg-config systemtap-sdt-dev libblocksruntime-dev libkqueue-dev libbsd-dev curl"
 
 # Run ldconfig
 ld_config="ldconfig"
