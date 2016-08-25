@@ -33,10 +33,10 @@ install_primary="apt-get install -y clang unixodbc-dev unzip wget tar git sudo u
 install_cli="wget https://github.com/IBM-DTeam/swift-for-db2-cli/archive/master.zip && unzip master.zip && cd swift-for-db2-cli-master && sudo ./cli.sh && . env.sh && cd .. && rm -f master.zip && rm -rf swift-for-db2-cli-master"
 
 # Get the needed Swift snapshot
-get_swift="wget https://swift.org/builds/development/ubuntu1510/swift-DEVELOPMENT-SNAPSHOT-2016-08-23-a/swift-DEVELOPMENT-SNAPSHOT-2016-08-23-a-ubuntu15.10.tar.gz"
-open_swift="tar -xvzf swift-DEVELOPMENT-SNAPSHOT-2016-08-23-a-ubuntu15.10.tar.gz"
+get_swift="wget https://swift.org/builds/development/ubuntu1510/swift-DEVELOPMENT-SNAPSHOT-2016-08-24-a/swift-DEVELOPMENT-SNAPSHOT-2016-08-24-a-ubuntu15.10.tar.gz"
+open_swift="tar -xvzf swift-DEVELOPMENT-SNAPSHOT-2016-08-24-a-ubuntu15.10.tar.gz"
 mkdir_swift="mkdir -p /home/root/swift"
-cp_swift="cp -r swift-DEVELOPMENT-SNAPSHOT-2016-08-23-a-ubuntu15.10/* /home/root/swift/"
+cp_swift="cp -r swift-DEVELOPMENT-SNAPSHOT-2016-08-24-a-ubuntu15.10/* /home/root/swift/"
 export_path="export PATH=/home/root/swift/usr/bin:$PATH"
 
 # DB2 database used for testing
