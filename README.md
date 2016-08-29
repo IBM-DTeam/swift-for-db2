@@ -1,4 +1,4 @@
-![swift-for-db2](https://ibm.app.box.com/representation/file_version_73046098109/image_2048/1.png?shared_name=8caxu7n4o0sacctzjz9j86fn8zst3l65)
+![swift-for-db2](https://ibm.ent.box.com/representation/file_version_100173182516/image_2048/1.png?shared_name=hjv6hjrp4hka97a8bkbtki7nahn17zf3)
 
 **Swift SDK for DB2**
 
