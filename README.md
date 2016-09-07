@@ -29,7 +29,7 @@ The Swift SDK for DB2 allows you to connect to your IBM DB2 database or products
 - Query your database asynchronously or synchronously.
 
 ## Swift Version
-The latest version of the Swift SDK for DB2 works with the DEVELOPMENT-SNAPSHOT-2016-08-31-a version of the Swift binaries. You can download this version of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
+The latest version of the Swift SDK for DB2 works with the DEVELOPMENT-SNAPSHOT-2016-09-06-a version of the Swift binaries. You can download this version of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
 
 ## Installation (OS X)
 
