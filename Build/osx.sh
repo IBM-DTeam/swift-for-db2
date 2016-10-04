@@ -29,9 +29,9 @@ brew install wget unixodbc
 wget https://github.com/IBM-DTeam/swift-for-db2-cli/archive/master.zip && unzip master.zip && cd swift-for-db2-cli-master && sudo ./cli.sh && . env.sh && cd .. && rm -f master.zip && rm -rf swift-for-db2-cli-master
 
 # Get the needed Swift snapshot
-export SWIFT_VERSION=swift-DEVELOPMENT-SNAPSHOT-2016-09-06-a
-wget https://swift.org/builds/development/xcode/swift-DEVELOPMENT-SNAPSHOT-2016-09-06-a/swift-DEVELOPMENT-SNAPSHOT-2016-09-06-a-osx.pkg
-sudo installer -pkg swift-DEVELOPMENT-SNAPSHOT-2016-09-06-a-osx.pkg -target /
+export SWIFT_VERSION=swift-3.0-RELEASE-osx
+wget https://swift.org/builds/swift-3.0-release/xcode/swift-3.0-RELEASE/swift-3.0-RELEASE-osx.pkg
+sudo installer -pkg swift-3.0-RELEASE-osx.pkg -target /
 export TOOLCHAINS=swift
 
 # DB2 database used for testing
