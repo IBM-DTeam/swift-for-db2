@@ -14,11 +14,17 @@
  * limitations under the License.
  **/
 
-module IBMCliLinux [system] [extern_c] {
-	header "/usr/include/sql.h"
-	header "/usr/include/sqlext.h"
-	header "/usr/local/include/ibm_db.h"
-	link "ibmdb"
-	link "db2"
-	export *
+module IBMDBLinker [system] [extern_c] {
+    header "/usr/local/include/ibmdb2/connect.h"
+    header "/usr/local/include/ibmdb2/disconnect.h"
+    header "/usr/local/include/ibmdb2/handle.h"
+    header "/usr/local/include/ibmdb2/query.h"
+    header "/usr/local/include/ibmdb2/database.h"
+    header "/usr/local/include/ibmdb2/error.h"
+    header "/usr/local/include/ibmdb2/type.h"
+    header "/usr/local/include/ibmdb2/prepared.h"
+    header "/usr/local/include/ibmdb2/result.h"
+    header "/usr/local/include/ibmdb2/transaction.h"
+    link "ibmdb2"
+    export *
 }
