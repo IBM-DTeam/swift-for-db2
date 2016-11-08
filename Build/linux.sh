@@ -42,7 +42,7 @@ mkdir_swift="mkdir -p /home/root/swift"
 cp_swift="cp -r swift-3.0-RELEASE-ubuntu15.10/* /home/root/swift/"
 export_path="export PATH=/home/root/swift/usr/bin:$PATH"
 
-# DB2 database used for testing
+# DB2 database string used for testing
 export_db="export DB2_CONN_STRING=\"DRIVER={DB2};DATABASE=BLUDB;UID=dash6435;PWD=0NKUFZxcskVZ;HOSTNAME=dashdb-entry-yp-dal09-09.services.dal.bluemix.net;PORT=50000\""
 
 # Build the project and test it
