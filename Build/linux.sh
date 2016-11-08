@@ -33,7 +33,7 @@ install_primary="apt-get install -y clang unixodbc-dev unzip wget tar git sudo u
 ld_config="ldconfig"
 
 # Install the IBM DB2 CLI
-install_cli="wget https://github.com/IBM-DTeam/swift-for-db2-cli/archive/new.zip && unzip new.zip && cd swift-for-db2-cli-new && sudo setup/cli.sh && setup/env.sh && make install && cd .. && rm -f new.zip && rm -rf swift-for-db2-cli-new"
+install_cli="wget https://github.com/IBM-DTeam/swift-for-db2-cli/archive/new.zip && unzip new.zip && cd swift-for-db2-cli-new && sudo setup/env.sh && setup/env.sh && make install && cd .. && rm -f new.zip && rm -rf swift-for-db2-cli-new"
 
 # Get the needed Swift snapshot
 get_swift="wget https://swift.org/builds/swift-3.0-release/ubuntu1510/swift-3.0-RELEASE/swift-3.0-RELEASE-ubuntu15.10.tar.gz"
