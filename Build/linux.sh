@@ -32,7 +32,7 @@ install_primary="apt-get install -y clang unixodbc-dev unzip wget tar git sudo u
 # Run ldconfig
 ld_config="ldconfig"
 
-# Install the IBM DB2 CLI
+# Install the newest IBM DB2 CLI 
 install_cli="wget https://github.com/IBM-DTeam/swift-for-db2-cli/archive/new.zip && unzip new.zip && cd swift-for-db2-cli-new && sudo setup/install.sh && . setup/env.sh && make install && cd .. && rm -f new.zip && rm -rf swift-for-db2-cli-new"
 
 # Get the needed Swift snapshot
