@@ -26,7 +26,7 @@ set -e
 brew install wget unixodbc
 
 # Install the Swift SDK for DB2 CLI
-wget https://github.com/IBM-DTeam/swift-for-db2-cli/archive/new.zip && unzip new.zip && cd swift-for-db2-cli-new && sudo setup/intall.sh && . setup/env.sh && make install && cd .. && rm -f new.zip && rm -rf swift-for-db2-cli-new
+wget https://github.com/IBM-DTeam/swift-for-db2-cli/archive/new.zip && unzip new.zip && cd swift-for-db2-cli-new && sudo setup/install.sh && . setup/env.sh && make install && cd .. && rm -f new.zip && rm -rf swift-for-db2-cli-new
 
 # Get the needed Swift snapshot
 export SWIFT_VERSION=swift-3.0-RELEASE-osx
