@@ -32,7 +32,7 @@ install_primary="apt-get install -y clang unixodbc-dev unzip wget tar git sudo u
 # Run ldconfig
 ld_config="ldconfig"
 
-# Install the newest IBM DB2 CLI 
+# Install the newest IBM DB2 CLI
 install_cli="wget https://github.com/IBM-DTeam/swift-for-db2-cli/archive/new.zip && unzip new.zip && cd swift-for-db2-cli-new && sudo setup/install.sh && . setup/env.sh && make install && cd .. && rm -f new.zip && rm -rf swift-for-db2-cli-new"
 
 # Get the needed Swift snapshot
@@ -46,6 +46,7 @@ export_path="export PATH=/home/root/swift/usr/bin:$PATH"
 export_db="export DB2_CONN_STRING=\"DRIVER={DB2};DATABASE=BLUDB;UID=dash6435;PWD=0NKUFZxcskVZ;HOSTNAME=dashdb-entry-yp-dal09-09.services.dal.bluemix.net;PORT=50000\""
 
 # Build the project and test it
-build_and_test="cd /swift-for-db2 && swift build && swift test -Xcc -I/usr/local/include -Xlinker -L/usr/local/lib"
+build_and_test="cd /swift-for-db2 && swift build -Xcc -I/usr/local/include -Xlinker -L/usr/local/lib"
+#build_and_test="cd /swift-for-db2 && swift build && swift test -Xcc -I/usr/local/include -Xlinker -L/usr/local/lib"
 
 docker run -v ${TRAVIS_BUILD_DIR}:/swift-for-db2 -i -t ubuntu:wily /bin/bash -c "${update} && ${install_primary} && ${ld_config} && ${install_cli} && ${get_swift} && ${open_swift} && ${mkdir_swift} && ${cp_swift} && ${export_path} && ${export_db} && ${build_and_test}"
