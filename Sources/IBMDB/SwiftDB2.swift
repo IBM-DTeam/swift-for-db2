@@ -18,15 +18,48 @@ import Foundation
 import Dispatch
 import IBMDBLinker
 
+#if os(Linux)
+	import Glibc
+#else
+	import Darwin
+#endif
+
+// Custom named queue
+let queue = DispatchQueue(label: "swift-for-db2", attributes: Dispatch.DispatchQueue.Attributes.concurrent)
 
 public class IBMDB {
 
+	var db: UnsafeMutablePointer<database>?
+
+	/**
+     * Empty constructor to initialize IBMDB.
+     */
 	public init() {
+		db = nil;
+	}
+
+	public func getConnection() -> UnsafeMutablePointer<database>? {
+		return db;
+	}
+
+	public func connect(connString: String, withCompletion: @escaping (state!) -> Void) -> Void {
+
+		queue.sync {
+			let s: state = self.connectSync(connString: connString);
+			withCompletion(s);
+		}
 
 	}
 
-	public func printp() {
-		print("Hi")
+	public func connectSync(connString: String) -> state! {
+
+		// Try to connect to the database
+		let s: state = connString.withCString { cConnString in
+			db_connect(&db, cConnString);
+		}
+
+		return s;
+
 	}
 
 }
