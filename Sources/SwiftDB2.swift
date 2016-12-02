@@ -17,15 +17,13 @@
 import Foundation
 import Dispatch
 
-// modulemaps are slightly different for each OS, need to import the correct
-// ones
 #if os(Linux)
     import Glibc
-    import IBMCliLinux
 #else
     import Darwin
-    import IBMCliDarwin
 #endif
+
+import CDB2Driver
 
 // Custom named queue
 let queue = DispatchQueue(label: "swift-for-db2", attributes: Dispatch.DispatchQueue.Attributes.concurrent)
