@@ -16,16 +16,10 @@
 
 import PackageDescription
 
-#if os(Linux)
 let package = Package(
   name: "IBMDB",
-  targets: [Target(name: "IBMDB", dependencies: [.Target(name: "IBMDBLinkerLinux")]),
-            Target(name: "IBMDBLinkerLinux")]
+  dependencies: [
+		.Package(url: "https://github.com/IBM-Swift/CIBMDB", majorVersion: 0, minor: 0)
+	]
 )
-#else
-let package = Package(
-  name: "IBMDB",
-  targets: [Target(name: "IBMDB", dependencies: [.Target(name: "IBMDBLinkerDarwin")]),
-            Target(name: "IBMDBLinkerDarwin")]
-)
-#endif
+
