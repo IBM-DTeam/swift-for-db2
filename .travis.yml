@@ -18,8 +18,8 @@ before_install:
 
 script:
   - echo ">> Building and testing Swift SDK for DB2."
-  swift build
-  swift test
+  - swift build
+  - swift test
   - echo ">> Swift SDK for DB2 built and tested. Check above for status."
 
 notifications:
