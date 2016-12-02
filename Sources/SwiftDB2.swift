@@ -23,7 +23,7 @@ import Dispatch
     import Darwin
 #endif
 
-import CDB2Driver
+import CIBMDB
 
 // Custom named queue
 let queue = DispatchQueue(label: "swift-for-db2", attributes: Dispatch.DispatchQueue.Attributes.concurrent)
