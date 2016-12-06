@@ -29,7 +29,7 @@ let queue = DispatchQueue(label: "swift-for-db2", attributes: Dispatch.DispatchQ
 
 public class IBMDB {
 
-	var db: UnsafeMutablePointer<database>?
+    var db: UnsafeMutablePointer<database>?
 
 	/**
      * Empty constructor to initialize IBMDB.
@@ -138,17 +138,18 @@ public class IBMDB {
      * Returns:
      *   s: The state of the function. If not successfull, use get next error to see the errors.
      *
-     *
+     */
     private func preparedQuery(queryString: String, hstmt: inout UnsafeMutablePointer<queryStruct>?, values: [String] ) -> state! {
-        var cArray = CStringArray(values)
+        let cArray = CStringArray(values)
     
         let s: state = queryString.withCString { cString in
-            db_prepare(self.db, &hstmt, UnsafeMutablePointer(mutating: cString), cArray.pointers[0])
+            db_prepare(self.db, &hstmt, UnsafeMutablePointer(mutating: cString), cArray.pointers)
         }
         return s;
         
     }
-    */
+    
+
     
     /**
      * Funtion name: Query
@@ -186,6 +187,7 @@ public class IBMDB {
      *
      */
     private func beginTrans() -> state! {
+  
         let s: state = db_beginTrans(&db);
         return s;
         
@@ -275,6 +277,32 @@ public class IBMDB {
         
         
     }
+    
+    /**
+     * Funtion name: Query
+     * ----------------------------
+     *
+     * Query the databse ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data.ad
+     *
+     * Input:
+     *   query: The query string to be executed
+     *   hstmt: Pointer to a hstmt struct that holds all the data of the accociated query string
+     *
+     * Returns:
+     *   s: The state of the function. If not successfull, use get next error to see the errors.
+     *
+     *
+    private func getNextError() -> UnsafeMutablePointer<databaseError>! {
+        let s: UnsafeMutablePointer<databaseError>!  = db_getNextError(db);
+        return s;
+        
+        
+    }
+    */
+    
+    
+    
+    
 
     
 
@@ -302,11 +330,18 @@ class CStringArray {
     // Have to keep the owning CString's alive so that the pointers
     // in our buffer aren't dealloc'd out from under us.
     private let _strings: [CString]
-    var pointers: [UnsafeMutablePointer<Int8>]
+    var pointers: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>!
     
     init(_ strings: [String]) {
         _strings = strings.map { CString($0) }
-        pointers = _strings.map { $0.buffer }
+        
+        pointers = UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>.allocate(capacity: strings.count + 1)
+        var ptr: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>! = pointers;
+        for i in 0...strings.count {
+            ptr.pointee = _strings[i].buffer;
+            ptr = ptr.successor()
+        }
+        
         // NULL-terminate our string pointer buffer since things like
         // exec*() and posix_spawn() require this.
         
