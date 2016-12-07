@@ -315,7 +315,7 @@ public class IBMDB {
      *
      */
     private func getNextError() -> UnsafeMutablePointer<databaseError>! {
-        let s: UnsafeMutablePointer<databaseError>!  = db_getNextError(&db);
+        let s: UnsafeMutablePointer<databaseError>!  = db_getNextError(db);
         return s;
         
         

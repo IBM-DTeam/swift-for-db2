@@ -24,6 +24,7 @@ module IBMDBLinker [system] [extern_c] {
     header "/usr/local/include/ibmdb2/type.h"
     header "/usr/local/include/ibmdb2/prepared.h"
     header "/usr/local/include/ibmdb2/result.h"
+    header "/usr/local/include/ibmdb2/structs.h"
     header "/usr/local/include/ibmdb2/transaction.h"
     link "ibmdb2"
     export *
