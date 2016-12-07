@@ -30,7 +30,7 @@ let queue = DispatchQueue(label: "swift-for-db2", attributes: Dispatch.DispatchQ
 public class IBMDB {
 
     var db: UnsafeMutablePointer<database>?
-
+ 
 	/**
      * Empty constructor to initialize IBMDB.
      */
@@ -40,6 +40,10 @@ public class IBMDB {
     
     
     /**
+     *
+     * Funtion name: getConnection
+     * ----------------------------
+     *
      * Gets the database struct associated with the instance
      *
      * Returns:
@@ -52,11 +56,15 @@ public class IBMDB {
     
     
     /**
+     *
+     * Funtion name: connect
+     * ----------------------------
+     *
      * Connects to the database asyncronously
      *
      */
 	public func connect(connString: String, withCompletion: @escaping (state!) -> Void) -> Void {
-
+ 
 		queue.sync {
 			let s: state = self.connectSync(connString: connString);
 			withCompletion(s);
@@ -65,6 +73,10 @@ public class IBMDB {
 	}
     
     /**
+     *
+     * Funtion name: connectSync
+     * ----------------------------
+     *
      * Connects synchronously from the database
      *
      * Returns:
@@ -82,7 +94,12 @@ public class IBMDB {
 	}
     
     /**
+     *
+     * Funtion name: disconnect
+     * ----------------------------
+     *
      * Disconnect asynchronously from the database
+     *
      */
     
     public func disconnect(withCompletion: @escaping (state!) -> Void) -> Void {
@@ -94,7 +111,12 @@ public class IBMDB {
     
     
     /**
+     *
+     * Funtion name: disconnectSync
+     * ----------------------------
+     *
      * Disconnect synchronously from the database
+     *
      */
     public func disconnectSync() -> state!{
         let s: state = db_disconnect(&db);
@@ -106,14 +128,14 @@ public class IBMDB {
      * Funtion name: Query
      * ----------------------------
      *
-     * Query the databse ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data.ad
+     * Query the database ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data
      *
      * Input:
      *   query: The query string to be executed
      *   hstmt: Pointer to a hstmt struct that holds all the data of the accociated query string
      *
      * Returns:
-     *   s: The state of the function. If not successfull, use get next error to see the errors.
+     *   s: The state of the function. If not successful, use get next error to see the errors.
      *
      */
     private func query(queryString: String, hstmt: inout UnsafeMutablePointer<queryStruct>?) -> state! {
@@ -126,22 +148,22 @@ public class IBMDB {
     }
     
     /**
-     * Funtion name: Query
+     * Funtion name: preparedQuery
      * ----------------------------
      *
-     * Query the databse ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data.ad
+     * Query the databse ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data
      *
      * Input:
-     *   query: The query string to be executed
+     *   queryString: The query string to be executed
      *   hstmt: Pointer to a hstmt struct that holds all the data of the accociated query string
+     *   values:
      *
      * Returns:
-     *   s: The state of the function. If not successfull, use get next error to see the errors.
+     *   s: The state of the function. If not successful, use get next error to see the errors.
      *
      */
     private func preparedQuery(queryString: String, hstmt: inout UnsafeMutablePointer<queryStruct>?, values: [String] ) -> state! {
         let cArray = CStringArray(values)
-    
         let s: state = queryString.withCString { cString in
             db_prepare(self.db, &hstmt, UnsafeMutablePointer(mutating: cString), cArray.pointers)
         }
@@ -152,7 +174,7 @@ public class IBMDB {
 
     
     /**
-     * Funtion name: Query
+     * Funtion name: preparedResults
      * ----------------------------
      *
      * Query the databse ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data.ad
@@ -173,7 +195,7 @@ public class IBMDB {
     
     
     /**
-     * Funtion name: Query
+     * Funtion name: beginTrans
      * ----------------------------
      *
      * Query the databse ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data.ad
@@ -196,7 +218,7 @@ public class IBMDB {
 
     
     /**
-     * Funtion name: Query
+     * Funtion name: commitTrans
      * ----------------------------
      *
      * Query the databse ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data.ad
@@ -216,7 +238,7 @@ public class IBMDB {
     }
     
     /**
-     * Funtion name: Query
+     * Funtion name: rollbackTrans
      * ----------------------------
      *
      * Query the databse ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data.ad
@@ -236,7 +258,7 @@ public class IBMDB {
     }
     
     /**
-     * Funtion name: Query
+     * Funtion name: getColumn
      * ----------------------------
      *
      * Query the databse ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data.ad
@@ -258,7 +280,7 @@ public class IBMDB {
     }
     
     /**
-     * Funtion name: Query
+     * Funtion name: getColumnNextRow
      * ----------------------------
      *
      * Query the databse ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data.ad
@@ -279,7 +301,7 @@ public class IBMDB {
     }
     
     /**
-     * Funtion name: Query
+     * Funtion name: getNextError
      * ----------------------------
      *
      * Query the databse ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data.ad
@@ -291,14 +313,13 @@ public class IBMDB {
      * Returns:
      *   s: The state of the function. If not successfull, use get next error to see the errors.
      *
-     *
+     */
     private func getNextError() -> UnsafeMutablePointer<databaseError>! {
-        let s: UnsafeMutablePointer<databaseError>!  = db_getNextError(db);
+        let s: UnsafeMutablePointer<databaseError>!  = db_getNextError(&db);
         return s;
         
         
     }
-    */
     
     
     
