@@ -16,6 +16,7 @@
 
 import XCTest
 @testable import IBMDB
+import IBMDBLinker
 
 #if os(Linux)
 import Glibc
@@ -99,21 +100,29 @@ class QuerySyncTests : XCTestCase {
       return
     }
 
-    let info = db.connectSync(info: connString!)
-
-    if info.error != nil {
-      return
+    let info = db.connectSync(connString: connString!)
+    
+    if info != 1{
+        
     }
 
-    let conn = info.connection
-
     let dropTableQuery = "DROP TABLE " + QuerySyncTests.tableName
-
-    conn!.querySync(query: dropTableQuery)
+    
+    var htmt: UnsafeMutablePointer<queryStruct>?
+    
+    let drop = db.query(queryString: dropTableQuery, hstmt: &htmt)
+    
+    if drop != 1{
+        
+    }
 
     let createTableQuery = "CREATE TABLE \(QuerySyncTests.tableName) (ID INTEGER NOT NULL, TEXT VARCHAR(256) NOT NULL)"
 
-    conn!.querySync(query: createTableQuery)
+    let create = db.query(queryString: createTableQuery, hstmt: &htmt)
+    
+    if create != 1{
+        
+    }
 
     QuerySyncTests.ranSetup = true
 
@@ -135,13 +144,10 @@ class QuerySyncTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let info = db.connectSync(info: connString!)
-
-    if info.error != nil {
-      XCTFail("Connection not established.")
+    let info = db.connectSync(connString: connString!)
+    if info != 1{
+        
     }
-
-    let conn = info.connection
 
     #if os(Linux)
     let id = 1 + Int(random() % (1101))
@@ -149,14 +155,17 @@ class QuerySyncTests : XCTestCase {
     let id = 1 + Int(arc4random_uniform(1101))
     #endif
     let query = "SELECT * FROM \(QuerySyncTests.tableName) WHERE ID=\(id)"
+    
+    var htmt = queryStruct()
 
-    let response = conn!.querySync(query: query)
+    let response = db.query(queryString: query, hstmt: &htmt)
 
-    if response.error != nil {
-      XCTFail(response.error!.description)
+    if response != 1{
+        
     }
 
-    XCTAssertGreaterThanOrEqual(response.result!.count, 0, "Got a result set with 0 or more rows.")
+    XCTAssertNil(response == 1 , "Query did not execute")
+    XCTAssertNil(htmt.retrieve.sNumColResults > 0 , "conn.error is Nil")
 
   }
 
@@ -172,13 +181,10 @@ class QuerySyncTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let info = db.connectSync(info: connString!)
-
-    if info.error != nil {
-      XCTFail("Connection not established.")
+    let info = db.connectSync(connString: connString!)
+    if info != 1{
+        
     }
-
-    let conn = info.connection
 
     for _ in 1...100 {
 
@@ -189,14 +195,16 @@ class QuerySyncTests : XCTestCase {
       #endif
 
       let query = "SELECT * FROM \(QuerySyncTests.tableName) WHERE ID=\(id)"
+        
+      var htmt: UnsafeMutablePointer<queryStruct>?
 
-      let response = conn!.querySync(query: query)
+      let response = db.query(queryString: query, hstmt: &htmt)
 
-      if response.error != nil {
-        XCTFail(response.error!.description)
-      }
+        if response != 1{
+            
+        }
 
-      XCTAssertGreaterThanOrEqual(response.result!.count, 0, "Got a result set with 0 or more rows.")
+      XCTAssertNil(response == 1 , "Query did not execute")
     }
 
 
@@ -214,13 +222,11 @@ class QuerySyncTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let info = db.connectSync(info: connString!)
-
-    if info.error != nil {
-      XCTFail("Connection not established.")
+    let info = db.connectSync(connString: connString!)
+    if info != 1{
+        
     }
 
-    let conn = info.connection
 
     for _ in 1...1000 {
 
@@ -232,13 +238,14 @@ class QuerySyncTests : XCTestCase {
 
       let query = "SELECT * FROM \(QuerySyncTests.tableName) WHERE ID=\(id)"
 
-      let response = conn!.querySync(query: query)
+      var htmt: UnsafeMutablePointer<queryStruct>?
+      let response = db.query(queryString: query, hstmt: &htmt)
 
-      if response.error != nil {
-        XCTFail(response.error!.description)
-      }
+        if response != 1{
+            
+        }
 
-      XCTAssertGreaterThanOrEqual(response.result!.count, 0, "Got a result set with 0 or more rows.")
+      XCTAssertNil(response == 1 , "Query did not execute")
     }
 
   }
@@ -255,23 +262,18 @@ class QuerySyncTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let info = db.connectSync(info: connString!)
-
-    if info.error != nil {
-      XCTFail("Connection not established.")
+    let info = db.connectSync(connString: connString!)
+    if info != 1{
+        
     }
-
-    let conn = info.connection
-
+ 
     let query = "DELETE FROM \(QuerySyncTests.tableName) WHERE ID=1"
+    
+    var htmt: UnsafeMutablePointer<queryStruct>?
+    
+    let response = db.query(queryString: query, hstmt: &htmt)
 
-    let response = conn!.querySync(query: query)
-
-    if response.error != nil {
-      XCTFail(response.error!.description)
-    }
-
-    XCTAssertGreaterThanOrEqual(response.result!.count, 0, "Got a result set with 0 or more rows.")
+    XCTAssertNil(response == 1 , "Query did not execute")
 
   }
 
@@ -286,24 +288,19 @@ class QuerySyncTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let info = db.connectSync(info: connString!)
-
-    if info.error != nil {
-      XCTFail("Connection not established.")
+    let info = db.connectSync(connString: connString!)
+    if info != 1{
+        
     }
-
-    let conn = info.connection
 
     for id in 2...101 {
       let query = "DELETE FROM \(QuerySyncTests.tableName) WHERE ID=\(id)"
+      
+      var htmt: UnsafeMutablePointer<queryStruct>?
+      let response = db.query(queryString: query, hstmt: &htmt)
 
-      let response = conn!.querySync(query: query)
 
-      if response.error != nil {
-        XCTFail(response.error!.description)
-      }
-
-      XCTAssertGreaterThanOrEqual(response.result!.count, 0, "Got a result set with 0 or more rows.")
+      XCTAssertNil(response == 1 , "Query did not execute")
     }
 
   }
@@ -319,24 +316,18 @@ class QuerySyncTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let info = db.connectSync(info: connString!)
-
-    if info.error != nil {
-      XCTFail("Connection not established.")
+    let info = db.connectSync(connString: connString!)
+    if info != 1{
+        
     }
-
-    let conn = info.connection
 
     for id in 102...1101 {
       let query = "DELETE FROM \(QuerySyncTests.tableName) WHERE ID=\(id)"
+      
+      var htmt: UnsafeMutablePointer<queryStruct>?
+      let response = db.query(queryString: query, hstmt: &htmt)
 
-      let response = conn!.querySync(query: query)
-
-      if response.error != nil {
-        XCTFail(response.error!.description)
-      }
-
-      XCTAssertGreaterThanOrEqual(response.result!.count, 0, "Got a result set with 0 or more rows.")
+      XCTAssertNil(response == 1 , "Query did not execute")
     }
   }
 
@@ -351,13 +342,10 @@ class QuerySyncTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let info = db.connectSync(info: connString!)
-
-    if info.error != nil {
-      XCTFail("Connection not established.")
+    let info = db.connectSync(connString: connString!)
+    if info != 1{
+        
     }
-
-    let conn = info.connection
 
     #if os(Linux)
     let randomString = String.getRandom(length: 1 + Int(random() % (256)))
@@ -366,14 +354,13 @@ class QuerySyncTests : XCTestCase {
     #endif
 
     let query = "UPDATE \(QuerySyncTests.tableName) SET TEXT='\(randomString)' WHERE ID=1"
+    
+    var htmt: UnsafeMutablePointer<queryStruct>?
+    
+    let response = db.query(queryString: query, hstmt: &htmt)
 
-    let response = conn!.querySync(query: query)
 
-    if response.error != nil {
-      XCTFail(response.error!.description)
-    }
-
-    XCTAssertGreaterThanOrEqual(response.result!.count, 0, "Got a result set with 0 or more rows.")
+    XCTAssertNil(response == 1 , "Query did not execute")
   }
 
   func testQuerySyncCUpdate100() {
@@ -387,13 +374,10 @@ class QuerySyncTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let info = db.connectSync(info: connString!)
-
-    if info.error != nil {
-      XCTFail("Connection not established.")
+    let info = db.connectSync(connString: connString!)
+    if info != 1{
+        
     }
-
-    let conn = info.connection
 
     for id in 2...101 {
 
@@ -404,14 +388,15 @@ class QuerySyncTests : XCTestCase {
       #endif
 
       let query = "UPDATE \(QuerySyncTests.tableName) SET TEXT='\(randomString)' WHERE ID=\(id)"
+        
+      var htmt: UnsafeMutablePointer<queryStruct>?
+      let response = db.query(queryString: query, hstmt: &htmt)
 
-      let response = conn!.querySync(query: query)
+        if response != 1{
+            
+        }
 
-      if response.error != nil {
-        XCTFail(response.error!.description)
-      }
-
-      XCTAssertGreaterThanOrEqual(response.result!.count, 0, "Got a result set with 0 or more rows.")
+      XCTAssertNil(response == 1 , "Query did not execute")
     }
 
   }
@@ -427,13 +412,12 @@ class QuerySyncTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let info = db.connectSync(info: connString!)
-
-    if info.error != nil {
-      XCTFail("Connection not established.")
+    let info = db.connectSync(connString: connString!)
+    if info != 1{
+        
     }
 
-    let conn = info.connection
+
 
     for id in 102...1101 {
 
@@ -444,14 +428,14 @@ class QuerySyncTests : XCTestCase {
       #endif
 
       let query = "UPDATE \(QuerySyncTests.tableName) SET TEXT='\(randomString)' WHERE ID=\(id)"
+      var htmt: UnsafeMutablePointer<queryStruct>?
+      let response = db.query(queryString: query, hstmt: &htmt)
 
-      let response = conn!.querySync(query: query)
+        if response != 1{
+            
+        }
 
-      if response.error != nil {
-        XCTFail(response.error!.description)
-      }
-
-      XCTAssertGreaterThanOrEqual(response.result!.count, 0, "Got a result set with 0 or more rows.")
+      XCTAssertNil(response == 1 , "Query did not execute")
     }
   }
 
@@ -466,13 +450,10 @@ class QuerySyncTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let info = db.connectSync(info: connString!)
-
-    if info.error != nil {
-      XCTFail("Connection not established.")
+    let info = db.connectSync(connString: connString!)
+    if info != 1{
+        
     }
-
-    let conn = info.connection
 
     #if os(Linux)
     let randomString = String.getRandom(length: 1 + Int(random() % (256)))
@@ -481,14 +462,11 @@ class QuerySyncTests : XCTestCase {
     #endif
 
     let query = "INSERT INTO \(QuerySyncTests.tableName) (ID, TEXT) VALUES (1, '\(randomString)')"
+    var htmt: UnsafeMutablePointer<queryStruct>?
+    let response = db.query(queryString: query, hstmt: &htmt)
 
-    let response = conn!.querySync(query: query)
 
-    if response.error != nil {
-      XCTFail(response.error!.description)
-    }
-
-    XCTAssertGreaterThanOrEqual(response.result!.count, 0, "Got a result set with 0 or more rows.")
+    XCTAssertNil(response == 1 , "Query did not execute")
 
   }
 
@@ -503,13 +481,10 @@ class QuerySyncTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let info = db.connectSync(info: connString!)
-
-    if info.error != nil {
-      XCTFail("Connection not established.")
+    let info = db.connectSync(connString: connString!)
+    if info != 1{
+        
     }
-
-    let conn = info.connection
 
     for id in 2...101 {
 
@@ -518,17 +493,12 @@ class QuerySyncTests : XCTestCase {
       #else
       let randomString = String.getRandom(length: 1 + Int(arc4random_uniform(256)))
       #endif
-
+      var htmt = queryStruct()
       let query = "INSERT INTO \(QuerySyncTests.tableName) (ID, TEXT) VALUES (\(id), '\(randomString)')"
 
-      let response = conn!.querySync(query: query)
+      let response = db.query(queryString: query, hstmt: &htmt)
 
-      if response.error != nil {
-        XCTFail(response.error!.description)
-        return
-      }
-
-      XCTAssertGreaterThanOrEqual(response.result!.count, 0, "Got a result set with 0 or more rows.")
+      XCTAssertNil(response == 1 , "Query did not execute")
     }
   }
 
@@ -543,13 +513,10 @@ class QuerySyncTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let info = db.connectSync(info: connString!)
-
-    if info.error != nil {
-      XCTFail("Connection not established.")
+    let info = db.connectSync(connString: connString!)
+    if info != 1{
+        
     }
-
-    let conn = info.connection
 
     for id in 102...1101 {
 
@@ -560,15 +527,10 @@ class QuerySyncTests : XCTestCase {
       #endif
 
       let query = "INSERT INTO " + QuerySyncTests.tableName + " (ID, TEXT) VALUES (\(id), '\(randomString)')"
+       var htmt: UnsafeMutablePointer<queryStruct>?
+      let response = db.query(queryString: query, hstmt: &htmt)
 
-      let response = conn!.querySync(query: query)
-
-      if response.error != nil {
-        XCTFail(response.error!.description)
-        return
-      }
-
-      XCTAssertGreaterThanOrEqual(response.result!.count, 0, "Got a result set with 0 or more rows.")
+      XCTAssertNil(response == 1 , "Query did not execute")
     }
   }
 

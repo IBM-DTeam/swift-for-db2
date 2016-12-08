@@ -138,7 +138,7 @@ public class IBMDB {
      *   s: The state of the function. If not successful, use get next error to see the errors.
      *
      */
-    private func query(queryString: String, hstmt: inout UnsafeMutablePointer<queryStruct>?) -> state! {
+    public func query(queryString: String, hstmt: inout UnsafeMutablePointer<queryStruct>?) -> state! {
         
         let s: state = queryString.withCString { cString in
             db_query(self.db, &hstmt, UnsafeMutablePointer(mutating: cString))

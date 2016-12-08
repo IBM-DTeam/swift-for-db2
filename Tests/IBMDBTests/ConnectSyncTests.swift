@@ -50,16 +50,15 @@ class ConnectSyncTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let info = db.connectSync(info: connStringValid!)
-    XCTAssertNil(info.error, "conn.error is Nil")
-    XCTAssertNotNil(info.connection, "conn.connection is not Nil")
+    let info = db.connectSync(connString: connStringValid!)
+    XCTAssertNil(info == 1 , "conn.error is Nil")
+
   }
 
   func testConnectSyncInvalidConfig() {
 
-    let info = db.connectSync(info: connStringInvalid)
-    XCTAssertNotNil(info.error, "conn.error is not Nil")
-    XCTAssertNil(info.connection, "conn.connection is Nil")
+    let info = db.connectSync(connString: connStringInvalid)
+    XCTAssertNotNil(info != 1, "conn.error is not Nil")
   }
 
 }

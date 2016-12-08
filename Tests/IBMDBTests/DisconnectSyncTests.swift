@@ -46,17 +46,10 @@ class DisconnectSyncTests : XCTestCase {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
 
-    let info = db.connectSync(info: connString!)
+    let _info = db.connectSync(connString: connString!)
 
-    var conn: Connection? = nil
-    if (info.connection != nil) {
-      conn = info.connection
-    } else {
-      XCTFail("Cannot establish a connection to the database.")
-    }
-
-    conn!.disconnectSync()
-    XCTAssertNotNil(conn!.info().error, "Cannot fetch database info.")
+    let disc = db.disconnectSync()
+    XCTAssertNotNil(disc == 1, "Cannot fetch database info.")
 
   }
 
