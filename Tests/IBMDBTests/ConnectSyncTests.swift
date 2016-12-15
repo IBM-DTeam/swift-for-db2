@@ -51,7 +51,7 @@ class ConnectSyncTests : XCTestCase {
     }
 
     let info = db.connectSync(connString: connStringValid!)
-    XCTAssertNil(info == 1 , "conn.error is Nil")
+    XCTAssertNil(info == 1 , "Connection Error")
 
   }
 
