@@ -156,7 +156,7 @@ class QuerySyncTests : XCTestCase {
     #endif
     let query = "SELECT * FROM \(QuerySyncTests.tableName) WHERE ID=\(id)"
     
-    var htmt = queryStruct()
+    var htmt: UnsafeMutablePointer<queryStruct>?
 
     let response = db.query(queryString: query, hstmt: &htmt)
 
@@ -165,7 +165,6 @@ class QuerySyncTests : XCTestCase {
     }
 
     XCTAssertNil(response == 1 , "Query did not execute")
-    XCTAssertNil(htmt.retrieve.sNumColResults > 0 , "conn.error is Nil")
 
   }
 
@@ -493,8 +492,9 @@ class QuerySyncTests : XCTestCase {
       #else
       let randomString = String.getRandom(length: 1 + Int(arc4random_uniform(256)))
       #endif
-      var htmt = queryStruct()
       let query = "INSERT INTO \(QuerySyncTests.tableName) (ID, TEXT) VALUES (\(id), '\(randomString)')"
+        
+      var htmt: UnsafeMutablePointer<queryStruct>?
 
       let response = db.query(queryString: query, hstmt: &htmt)
 

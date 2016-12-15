@@ -47,6 +47,8 @@ class DisconnectSyncTests : XCTestCase {
     }
 
     let _info = db.connectSync(connString: connString!)
+    
+    XCTAssertNotNil(_info == 1, "Could not Connect")
 
     let disc = db.disconnectSync()
     XCTAssertNotNil(disc == 1, "Cannot fetch database info.")
