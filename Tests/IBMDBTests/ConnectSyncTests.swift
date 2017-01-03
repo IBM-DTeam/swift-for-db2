@@ -13,52 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-
 import XCTest
 @testable import IBMDB
-
 #if os(Linux)
 import Glibc
 #else
 import Darwin
 #endif
-
 class ConnectSyncTests : XCTestCase {
-
   static var allTests : [(String, (ConnectSyncTests) -> () throws -> Void)] {
     return [
-    ("testConnectSyncValidConfig", testConnectSyncValidConfig),
-    ("testConnectSyncInvalidConfig", testConnectSyncInvalidConfig)
-
+    ("testConnectSyncValidConfig", testConnectSyncValidConfig)
     ]
   }
-
-
   let db = IBMDB()
-  let connStringInvalid = "DRIVER={DB2};DATABASE=someDB;UID=someUID;PWD=somePWD;HOSTNAME=someHost;PORT=somePort"
-
-
   func testConnectSyncValidConfig() {
-
-    var connStringValid: String? = nil
-
-    if getenv("DB2_CONN_STRING") != nil {
-      connStringValid = String(validatingUTF8: getenv("DB2_CONN_STRING"))
-    }
-
+    let connStringValid: String? =  String(validatingUTF8:
+getenv("DB2_CONN_STRING"))
     if connStringValid == nil {
       XCTFail("Environment Variable DB2_CONN_STRING not set.")
     }
-
-    let info = db.connectSync(connString: connStringValid!)
-    XCTAssertNil(info == 1 , "Connection Error")
-
+    let state = db.connectSync(connString: connStringValid!)
+    if Int(state!) != State.SUCCESS.rawValue || Int(state!) !=
+State.SUCCESS_WITH_INFO.rawValue {
+      XCTFail("Cannot connect to the database")
+    }
   }
-
-  func testConnectSyncInvalidConfig() {
-
-    let info = db.connectSync(connString: connStringInvalid)
-    XCTAssertNotNil(info != 1, "conn.error is not Nil")
-  }
-
 }

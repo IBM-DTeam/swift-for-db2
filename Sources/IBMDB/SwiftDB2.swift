@@ -1,3 +1,4 @@
+// TODO: Create a state wrapper
 /**
  * Copyright IBM Corporation 2016
  *
@@ -13,31 +14,73 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-
 import Foundation
 import Dispatch
 import IBMDBLinker
-
 #if os(Linux)
-	import Glibc
+ import Glibc
 #else
-	import Darwin
+ import Darwin
 #endif
-
+enum State : Int {
+  case SUCCESS = 1
+  case SUCCESS_WITH_INFO = 2
+  case RECIEVE = 3
+  case INFO = 4
+  case OTHER = 5
+  case CATASTROPHIC_FAILURE = -1
+  case MALLOC_FAILURE = -2
+  case SETUP_DATABASE_FAILURE = -3
+  case FETCH_DATABASE_ERROR_FAILURE = -4
+  case DATABASE_DISCONNECT_FAILURE = -5
+  case NO_DATABASE_FOUND = -6
+  case DATABASE_EXISTS = -7
+  case STATEMENT_HANDLE_EXISTS = -8
+  case QUERY_FAILURE = -9
+  case STMT_HANDLE_SETUP_FAILURE = -10
+  case PARAMETER_BIND_FAILURE = -11
+  case QUERY_EXECUTION_FAILURE = -12
+  case GET_NUM_COLUMNS_FAILURE = -13
+  case GET_NUM_ROWS_FAILURE = -14
+  case DESCRIBE_COL_FAILURE = -15
+  case CANNOT_FETCH_ROW = -16
+  case CANNOT_GET_DATA = -17
+  case SET_CONNECTION_ATTR_FAIL = -18
+  case COMMIT_TRANSACTION_FAILURE = -19
+  case ROLLBACK_TRANSACTION_FAILURE = -20
+  case SQL_PREPARE_FAILURE = -21
+  case NUM_PARAMETERS_FAILURE = -22
+  case DESCRIBE_PARAMETER_FAILURE = -23
+  case STATEMENT_HANDLE_NONEXISTANT = -24
+  case NO_MORE_ROWS = -25
+  case DATA_RETRIVAL_FAILURE = -26
+}
 // Custom named queue
-let queue = DispatchQueue(label: "swift-for-db2", attributes: Dispatch.DispatchQueue.Attributes.concurrent)
-
+let queue = DispatchQueue(label: "swift-for-db2", attributes:
+Dispatch.DispatchQueue.Attributes.concurrent)
 public class IBMDB {
-
     var db: UnsafeMutablePointer<database>?
- 
-	/**
+ /**
      * Empty constructor to initialize IBMDB.
      */
-	public init() {
-		db = nil;
-	}
-    
+ public init() {
+  db = nil;
+ }
+
+    /**
+     *
+     * Funtion name: getConnection
+     * ----------------------------
+     *
+     * Gets the database struct associated with the instance
+     *
+     * Returns:
+     *     db: The database struct
+     */
+ public func getConnection() -> UnsafeMutablePointer<database>? {
+  return db;
+ }
+
     
     /**
      *
@@ -49,10 +92,10 @@ public class IBMDB {
      * Returns:
      *     db: The database struct
      */
-    
-	public func getConnection() -> UnsafeMutablePointer<database>? {
-		return db;
-	}
+    public func makeQueryStruct() -> UnsafeMutablePointer<queryStruct>? {
+        var hstmt: UnsafeMutablePointer<queryStruct>?
+        return hstmt
+    }
     
     
     /**
@@ -63,15 +106,13 @@ public class IBMDB {
      * Connects to the database asyncronously
      *
      */
-	public func connect(connString: String, withCompletion: @escaping (state!) -> Void) -> Void {
- 
-		queue.sync {
-			let s: state = self.connectSync(connString: connString);
-			withCompletion(s);
-		}
-
-	}
-    
+ public func connect(connString: String, withCompletion: @escaping
+(state!) -> Void) -> Void {
+  queue.sync {
+   let s: state = self.connectSync(connString: connString);
+   withCompletion(s);
+  }
+ }
     /**
      *
      * Funtion name: connectSync
@@ -82,17 +123,13 @@ public class IBMDB {
      * Returns:
      *     s: returns the state of the function
      */
-	public func connectSync(connString: String) -> state! {
-
-		// Try to connect to the database
-		let s: state = connString.withCString { cConnString in
-			db_connect(&db, cConnString);
-		}
-
-		return s;
-
-	}
-    
+    public func connectSync(connString: String) -> state! {
+  // Try to connect to the database
+  let s: state = connString.withCString { cConnString in
+   db_connect(&db, cConnString);
+  }
+  return s;
+ }
     /**
      *
      * Funtion name: disconnect
@@ -101,15 +138,13 @@ public class IBMDB {
      * Disconnect asynchronously from the database
      *
      */
-    
     public func disconnect(withCompletion: @escaping (state!) -> Void) -> Void {
         queue.sync {
             let s: state = self.disconnectSync();
             withCompletion(s);
         }
     }
-    
-    
+
     /**
      *
      * Funtion name: disconnectSync
@@ -122,249 +157,261 @@ public class IBMDB {
         let s: state = db_disconnect(&db);
         return s;
     }
-    
-    
+
     /**
      * Funtion name: Query
      * ----------------------------
      *
-     * Query the database ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data
+     * Query the database ad hoc. Will get data and place it in the
+retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn
+for data
      *
      * Input:
      *   query: The query string to be executed
-     *   hstmt: Pointer to a hstmt struct that holds all the data of the accociated query string
+     *   hstmt: Pointer to a hstmt struct that holds all the data of
+the accociated query string
      *
      * Returns:
-     *   s: The state of the function. If not successful, use get next error to see the errors.
+     *   s: The state of the function. If not successful, use get next
+error to see the errors.
      *
      */
-    public func query(queryString: String, hstmt: inout UnsafeMutablePointer<queryStruct>?) -> state! {
-        
+    public func query(queryString: String, hstmt: inout
+UnsafeMutablePointer<queryStruct>?) -> state! {
         let s: state = queryString.withCString { cString in
             db_query(self.db, &hstmt, UnsafeMutablePointer(mutating: cString))
         }
         return s;
-
     }
-    
     /**
      * Funtion name: preparedQuery
      * ----------------------------
      *
-     * Query the databse ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data
+     * Query the databse ad hoc. Will get data and place it in the
+retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn
+for data
      *
      * Input:
      *   queryString: The query string to be executed
-     *   hstmt: Pointer to a hstmt struct that holds all the data of the accociated query string
+     *   hstmt: Pointer to a hstmt struct that holds all the data of
+the accociated query string
      *   values:
      *
      * Returns:
-     *   s: The state of the function. If not successful, use get next error to see the errors.
+     *   s: The state of the function. If not successful, use get next
+error to see the errors.
      *
      */
-    private func preparedQuery(queryString: String, hstmt: inout UnsafeMutablePointer<queryStruct>?, values: [String] ) -> state! {
+    private func preparedQuery(queryString: String, hstmt: inout
+UnsafeMutablePointer<queryStruct>?, values: [String] ) -> state! {
         let cArray = CStringArray(values)
         let s: state = queryString.withCString { cString in
-            db_prepare(self.db, &hstmt, UnsafeMutablePointer(mutating: cString), cArray.pointers)
+            db_prepare(self.db, &hstmt, UnsafeMutablePointer(mutating:
+cString), cArray.pointers)
         }
         return s;
-        
     }
-    
 
-    
     /**
      * Funtion name: preparedResults
      * ----------------------------
      *
-     * Query the databse ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data.ad
+     * Query the databse ad hoc. Will get data and place it in the
+retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn
+for data.ad
      *
      * Input:
      *   query: The query string to be executed
-     *   hstmt: Pointer to a hstmt struct that holds all the data of the accociated query string
+     *   hstmt: Pointer to a hstmt struct that holds all the data of
+the accociated query string
      *
      * Returns:
-     *   s: The state of the function. If not successfull, use get next error to see the errors.
+     *   s: The state of the function. If not successfull, use get
+next error to see the errors.
      *
      */
-    private func preparedResults(hstmt: inout UnsafeMutablePointer<queryStruct>?) -> state! {
+    private func preparedResults(hstmt: inout
+UnsafeMutablePointer<queryStruct>?) -> state! {
         let s: state = db_executePrepared(db, &hstmt);
         return s;
-        
     }
-    
-    
+
     /**
      * Funtion name: beginTrans
      * ----------------------------
      *
-     * Query the databse ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data.ad
+     * Query the databse ad hoc. Will get data and place it in the
+retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn
+for data.ad
      *
      * Input:
      *   query: The query string to be executed
-     *   hstmt: Pointer to a hstmt struct that holds all the data of the accociated query string
+     *   hstmt: Pointer to a hstmt struct that holds all the data of
+the accociated query string
      *
      * Returns:
-     *   s: The state of the function. If not successfull, use get next error to see the errors.
+     *   s: The state of the function. If not successfull, use get
+next error to see the errors.
      *
      */
     private func beginTrans() -> state! {
-  
         let s: state = db_beginTrans(&db);
         return s;
-        
     }
-    
 
-    
     /**
      * Funtion name: commitTrans
      * ----------------------------
      *
-     * Query the databse ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data.ad
+     * Query the databse ad hoc. Will get data and place it in the
+retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn
+for data.ad
      *
      * Input:
      *   query: The query string to be executed
-     *   hstmt: Pointer to a hstmt struct that holds all the data of the accociated query string
+     *   hstmt: Pointer to a hstmt struct that holds all the data of
+the accociated query string
      *
      * Returns:
-     *   s: The state of the function. If not successfull, use get next error to see the errors.
+     *   s: The state of the function. If not successfull, use get
+next error to see the errors.
      *
      */
     private func commitTrans() -> state! {
         let s: state = db_commitTrans(&db);
         return s;
-        
     }
-    
     /**
      * Funtion name: rollbackTrans
      * ----------------------------
      *
-     * Query the databse ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data.ad
+     * Query the databse ad hoc. Will get data and place it in the
+retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn
+for data.ad
      *
      * Input:
      *   query: The query string to be executed
-     *   hstmt: Pointer to a hstmt struct that holds all the data of the accociated query string
+     *   hstmt: Pointer to a hstmt struct that holds all the data of
+the accociated query string
      *
      * Returns:
-     *   s: The state of the function. If not successfull, use get next error to see the errors.
+     *   s: The state of the function. If not successfull, use get
+next error to see the errors.
      *
      */
     private func rollbackTrans() -> state! {
         let s: state = db_rollbackTrans(&db);
         return s;
-        
     }
-    
     /**
      * Funtion name: getColumn
      * ----------------------------
      *
-     * Query the databse ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data.ad
+     * Query the databse ad hoc. Will get data and place it in the
+retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn
+for data.ad
      *
      * Input:
      *   query: The query string to be executed
-     *   hstmt: Pointer to a hstmt struct that holds all the data of the accociated query string
+     *   hstmt: Pointer to a hstmt struct that holds all the data of
+the accociated query string
      *
      * Returns:
-     *   s: The state of the function. If not successfull, use get next error to see the errors.
+     *   s: The state of the function. If not successfull, use get
+next error to see the errors.
      *
      */
-    private func getColumn(hstmt: inout UnsafeMutablePointer<queryStruct>?, columnName: String) -> UnsafeMutablePointer<data>! {
+    private func getColumn(hstmt: inout
+UnsafeMutablePointer<queryStruct>?, columnName: String) ->
+UnsafeMutablePointer<data>! {
         let s: UnsafeMutablePointer<data> = columnName.withCString { cString in
             db_getColumn(hstmt, UnsafeMutablePointer(mutating: cString))
         }
         return s;
-        
     }
-    
     /**
      * Funtion name: getColumnNextRow
      * ----------------------------
      *
-     * Query the databse ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data.ad
+     * Query the databse ad hoc. Will get data and place it in the
+retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn
+for data.ad
      *
      * Input:
      *   query: The query string to be executed
-     *   hstmt: Pointer to a hstmt struct that holds all the data of the accociated query string
+     *   hstmt: Pointer to a hstmt struct that holds all the data of
+the accociated query string
      *
      * Returns:
-     *   s: The state of the function. If not successfull, use get next error to see the errors.
+     *   s: The state of the function. If not successfull, use get
+next error to see the errors.
      *
      */
-    private func getColumnNextRow(pointer: UnsafeMutablePointer<data>!) -> UnsafeMutablePointer<data>! {
+    private func getColumnNextRow(pointer:
+UnsafeMutablePointer<data>!) -> UnsafeMutablePointer<data>! {
         let s: UnsafeMutablePointer<data>!  = db_getColumnNextRow(pointer);
         return s;
-        
-        
+
     }
-    
     /**
      * Funtion name: getNextError
      * ----------------------------
      *
-     * Query the databse ad hoc. Will get data and place it in the retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn for data.ad
+     * Query the databse ad hoc. Will get data and place it in the
+retrieve struct within the hstmtStruct. Use getNextRow/getNextColumn
+for data.ad
      *
      * Input:
      *   query: The query string to be executed
-     *   hstmt: Pointer to a hstmt struct that holds all the data of the accociated query string
+     *   hstmt: Pointer to a hstmt struct that holds all the data of
+the accociated query string
      *
      * Returns:
-     *   s: The state of the function. If not successfull, use get next error to see the errors.
+     *   s: The state of the function. If not successfull, use get
+next error to see the errors.
      *
      */
     private func getNextError() -> UnsafeMutablePointer<databaseError>! {
         let s: UnsafeMutablePointer<databaseError>!  = db_getNextError(db);
         return s;
-        
-        
-    }
-    
-    
-    
-    
 
-    
+    }
+
+
 
 }
-
 
 class CString {
     private let _len: Int
     let buffer: UnsafeMutablePointer<Int8>
-    
     init(_ string: String) {
         (_len, buffer) = string.withCString {
             let len = Int(strlen($0) + 1)
-            let dst = strcpy(UnsafeMutablePointer<Int8>.allocate(capacity: len), $0)
+            let dst =
+strcpy(UnsafeMutablePointer<Int8>.allocate(capacity: len), $0)
             return (len, dst!)
         }
     }
-    
     deinit {
         buffer.deallocate(capacity: _len)
     }
 }
-
 class CStringArray {
     // Have to keep the owning CString's alive so that the pointers
     // in our buffer aren't dealloc'd out from under us.
     private let _strings: [CString]
     var pointers: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>!
-    
     init(_ strings: [String]) {
         _strings = strings.map { CString($0) }
-        
-        pointers = UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>.allocate(capacity: strings.count + 1)
+        pointers =
+UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>.allocate(capacity:
+strings.count + 1)
         var ptr: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>! = pointers;
         for i in 0...strings.count {
             ptr.pointee = _strings[i].buffer;
             ptr = ptr.successor()
         }
-        
         // NULL-terminate our string pointer buffer since things like
         // exec*() and posix_spawn() require this.
-        
     }
 }
