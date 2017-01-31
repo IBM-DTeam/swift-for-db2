@@ -19,7 +19,5 @@ import XCTest
 @testable import IBMDBTests
 
 XCTMain([
-    testCase(ConnectSyncTests.allTests),
-    testCase(DisconnectSyncTests.allTests),
-    testCase(QuerySyncTests.allTests)
+    testCase(ConnectSyncTests.allTests)
     ])
